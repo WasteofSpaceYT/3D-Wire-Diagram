@@ -8,34 +8,41 @@
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
+    let walls:THREE.Object3D<THREE.Event>[] = [];
 	const camera = new PerspectiveCamera(
 		75,
 		window.innerWidth / window.innerHeight,
 		0.0001,
 		100
-	);
-	let floorCorners;
-	const raycaster = new THREE.Raycaster();
-	const pointer = new THREE.Vector2();
-	function pointerMove( event ) {
-		pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-		pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-	}
-	function render() {
-			raycaster.setFromCamera(floorCorners[0], camera);
-
-			// calculate objects intersecting the picking ray
-			const intersects = raycaster.intersectObjects(scene.children);
-			console.log(intersects);
-
-			for (let i = 0; i < intersects.length; i++) {
-				if(intersects[i].object.name.toLowerCase().includes("wall")){
-				// @ts-ignore
-				intersects[i].object.visible = false;
-				}
-			}
-
-			requestAnimationFrame(render);
+        );
+        let floorCorners;
+        const raycaster = new THREE.Raycaster();
+        
+        function render(time: number) {
+        requestAnimationFrame(render);
+        let blockingFloor = false;
+            for(const wall of walls){
+                for(const corner of floorCorners){
+                    raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
+                }
+                let target: THREE.Intersection<THREE.Object3D<THREE.Event>>[] = [];
+                    target.length = 0;
+                const intersects = raycaster.intersectObjects([wall], true, target);
+                if(target.length > 0){
+                    console.log(target)
+                    blockingFloor = true;
+                    wall.visible = false;
+                    break;
+                }
+                //console.log(intersects)
+                if(intersects.length > 0){
+                    blockingFloor = true;
+                    break;
+                }
+                //console.log(wall.name, wall.visible, blockingFloor)
+                //wall.visible = !blockingFloor;
+            }
+			
 			renderer.render(scene, camera);
 		}
 	onMount(() => {
@@ -44,7 +51,6 @@
 		loader.load(
 			"/room.gltf",
 			(room) => {
-				room.scene.castShadow = true;
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
 						let floor = room.scene.children[i];
@@ -71,7 +77,9 @@
 										),
 									];
 									renderer.setAnimationLoop(render);
-					}
+					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
+                        walls.push(room.scene.children[i]);
+                    }
 				}
 				/*for(let i = 0; i < room.scene.children.length; i++) {
                 console.log(room.scene.children[i].type)
@@ -119,5 +127,4 @@
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
 	}}
-	on:pointermove={pointerMove}
 />
