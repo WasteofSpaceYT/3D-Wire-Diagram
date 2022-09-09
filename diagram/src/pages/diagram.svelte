@@ -31,16 +31,8 @@
                 if(target.length > 0){
                     console.log(target)
                     blockingFloor = true;
-                    wall.visible = false;
-                    break;
                 }
-                //console.log(intersects)
-                if(intersects.length > 0){
-                    blockingFloor = true;
-                    break;
-                }
-                //console.log(wall.name, wall.visible, blockingFloor)
-                //wall.visible = !blockingFloor;
+				wall.visible = !blockingFloor;
             }
 			
 			renderer.render(scene, camera);
@@ -56,26 +48,34 @@
 						let floor = room.scene.children[i];
 						floorCorners = [
 							new THREE.Vector3(
-								floor.position.x + floor.scale.x,
+								floor.position.x + floor.scale.x - 0.2,
 								floor.position.y,
-								floor.position.z + floor.scale.z
+								floor.position.z + floor.scale.z - 0.2
 							),
 							new THREE.Vector3(
-								floor.position.x + floor.scale.x,
+								floor.position.x + floor.scale.x - 0.2,
 								floor.position.y,
-								floor.position.z - floor.scale.z
+								floor.position.z - floor.scale.z + 0.2
 								),
 								new THREE.Vector3(
-									floor.position.x - floor.scale.x,
+									floor.position.x - floor.scale.x + 0.2,
 									floor.position.y,
-									floor.position.z - floor.scale.z
+									floor.position.z - floor.scale.z + 0.2
 									),
 									new THREE.Vector3(
-										floor.position.x - floor.scale.x,
+										floor.position.x - floor.scale.x + 0.2,
 										floor.position.y,
-										floor.position.z + floor.scale.z
+										floor.position.z + floor.scale.z - 0.2
 										),
 									];
+
+									for(const corner of floorCorners){
+										const geometry = new THREE.SphereGeometry( 0.1, 32, 32 );
+										const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+										const sphere = new THREE.Mesh( geometry, material );
+										sphere.position.copy(corner);
+										scene.add( sphere );
+									}
 									renderer.setAnimationLoop(render);
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
                         walls.push(room.scene.children[i]);
