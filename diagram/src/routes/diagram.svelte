@@ -9,6 +9,9 @@
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
     let walls:THREE.Object3D<THREE.Event>[] = [];
+	function assembleScene() {
+		
+	}
 	const camera = new PerspectiveCamera(
 		75,
 		window.innerWidth / window.innerHeight,
@@ -20,17 +23,15 @@
         
         function render(time: number) {
         requestAnimationFrame(render);
-        let blockingFloor = false;
-            for(const wall of walls){
+		for(const wall of walls){
+				let blockingFloor = false;
                 for(const corner of floorCorners){
-                    raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
-                }
-                let target: THREE.Intersection<THREE.Object3D<THREE.Event>>[] = [];
-                    target.length = 0;
-                const intersects = raycaster.intersectObjects([wall], true, target);
-                if(target.length > 0){
-                    console.log(target)
-                    blockingFloor = true;
+					raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
+					const intersects = raycaster.intersectObjects([wall], true);
+					if(intersects.length > 0){
+						blockingFloor = true;
+						break;
+					}
                 }
 				wall.visible = !blockingFloor;
             }
@@ -38,7 +39,7 @@
 			renderer.render(scene, camera);
 		}
 	onMount(() => {
-		renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+		renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
 		const loader = new GLTFLoader();
 		loader.load(
 			"/room.gltf",
@@ -49,50 +50,30 @@
 						floorCorners = [
 							new THREE.Vector3(
 								floor.position.x + floor.scale.x - 0.2,
-								floor.position.y,
+								floor.position.y * 2,
 								floor.position.z + floor.scale.z - 0.2
 							),
 							new THREE.Vector3(
 								floor.position.x + floor.scale.x - 0.2,
-								floor.position.y,
+								floor.position.y * 2,
 								floor.position.z - floor.scale.z + 0.2
 								),
 								new THREE.Vector3(
 									floor.position.x - floor.scale.x + 0.2,
-									floor.position.y,
+									floor.position.y * 2,
 									floor.position.z - floor.scale.z + 0.2
 									),
 									new THREE.Vector3(
 										floor.position.x - floor.scale.x + 0.2,
-										floor.position.y,
+										floor.position.y * 2,
 										floor.position.z + floor.scale.z - 0.2
 										),
 									];
-
-									for(const corner of floorCorners){
-										const geometry = new THREE.SphereGeometry( 0.1, 32, 32 );
-										const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-										const sphere = new THREE.Mesh( geometry, material );
-										sphere.position.copy(corner);
-										scene.add( sphere );
-									}
 									renderer.setAnimationLoop(render);
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
                         walls.push(room.scene.children[i]);
                     }
 				}
-				/*for(let i = 0; i < room.scene.children.length; i++) {
-                console.log(room.scene.children[i].type)
-                // @ts-ignore
-                if(room.scene.children[i].type === "Mesh") {
-                    // @ts-ignore
-                    room.scene.children[i].material!.color.r = 210
-                    // @ts-ignore
-                    room.scene.children[i].material!.color.g = 180
-                    // @ts-ignore
-                    room.scene.children[i].material!.color.b = 140
-                }
-            }*/
 				scene.add(room.scene);
 			},
 			console.log,
@@ -103,18 +84,9 @@
 		scene.add(camera);
 		const controls = new OrbitControls(camera, canvas);
 		renderer.setSize(window.innerWidth, window.innerHeight);
-
-		const floor = new THREE.Mesh(
-			new THREE.BoxGeometry(5, 0.02, 5),
-			new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-		);
-		floor.name = "floor";
-		scene.background = new THREE.Color("#f111111");
-		//scene.add( floor );
 		var light = new THREE.DirectionalLight(0xffffff, 10);
 		light.castShadow = true;
 		scene.add(light);
-		console.log(scene.children);
 		renderer.render(scene, camera);
 	});
 </script>

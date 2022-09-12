@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 import { Router, Link, Route } from "svelte-routing";
-import Diagram from "./pages/diagram.svelte";
-import Home from "./pages/home.svelte";
+import Diagram from "./routes/diagram.svelte";
+import Home from "./routes/home.svelte";
+let isSubmitted = false;
 </script>
 <div>
 	<Diagram />
