@@ -11,6 +11,7 @@
 	let width;
 	let height;
 	let url = location.href
+	try {
 	let params = url.split("?")[1].split("&")
 	if(params.length != 2){
 		alert("Invalid arguments")
@@ -19,11 +20,15 @@
 		alert("Invalid arguments")
 	}
 	if(params[0].split("=")[0] != "width" || params[1].split("=")[0] != "height" && params.length == 2){
-		width = 10;
+		width = 5;
 		height = 5;
 	} else {
 	width = parseInt(params[0].split("=")[1])
 	height = parseInt(params[1].split("=")[1])
+	}
+	} catch(err) {
+		width = 5;
+		height = 5;
 	}
     let walls:THREE.Object3D<THREE.Event>[] = [];
 	function assembleScene() {
