@@ -8,8 +8,23 @@
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
+	let width;
+	let height;
 	let url = location.href
-	console.log(url)
+	let params = url.split("?")[1].split("&")
+	if(params.length != 2){
+		alert("Invalid arguments")
+	}
+	if(params[0].split("=")[0] != "width" || params[1].split("=")[0] != "height"){
+		alert("Invalid arguments")
+	}
+	if(params[0].split("=")[0] != "width" || params[1].split("=")[0] != "height" && params.length == 2){
+		width = 10;
+		height = 5;
+	} else {
+	width = parseInt(params[0].split("=")[1])
+	height = parseInt(params[1].split("=")[1])
+	}
     let walls:THREE.Object3D<THREE.Event>[] = [];
 	function assembleScene() {
 		
@@ -49,6 +64,8 @@
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
 						let floor = room.scene.children[i];
+						floor.scale.setX(width);
+						floor.scale.setZ(height);
 						floorCorners = [
 							new THREE.Vector3(
 								floor.position.x + floor.scale.x - 0.2,
