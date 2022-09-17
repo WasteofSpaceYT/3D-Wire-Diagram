@@ -47,6 +47,7 @@
 					const intersects = raycaster.intersectObjects([wall], true);
 					if(intersects.length > 0){
 						blockingFloor = true;
+						console.log(intersects)
 						break;
 					}
                 }
@@ -109,7 +110,6 @@
 		renderer.render(scene, camera);
 	});
 </script>
-<h1>{url}</h1>
 <canvas bind:this={canvas} style="w-full h-full" />
 
 <svelte:window

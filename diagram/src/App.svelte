@@ -3,11 +3,10 @@ import { Router, Link, Route } from "svelte-routing";
 import Diagram from "./routes/diagram.svelte";
 import Home from "./routes/home.svelte";
 let isSubmitted = false;
-let url = "";
 </script>
 <div>
-	<Router bind:url={url}>
-		<Route path="/diagram"><Diagram url={url} /></Route>
+	<Router>
+		<Route path="/diagram" component={Diagram} />
 		<Route path="/">
 	<Home />
 		</Route>
