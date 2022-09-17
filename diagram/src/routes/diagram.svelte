@@ -8,7 +8,8 @@
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
-	export let url;
+	let url = location.href
+	console.log(url)
     let walls:THREE.Object3D<THREE.Event>[] = [];
 	function assembleScene() {
 		
