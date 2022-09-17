@@ -8,6 +8,7 @@
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
+	export let url;
     let walls:THREE.Object3D<THREE.Event>[] = [];
 	function assembleScene() {
 		
@@ -90,7 +91,7 @@
 		renderer.render(scene, camera);
 	});
 </script>
-
+<h1>{url}</h1>
 <canvas bind:this={canvas} style="w-full h-full" />
 
 <svelte:window

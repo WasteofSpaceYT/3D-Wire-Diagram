@@ -6,9 +6,8 @@ let isSubmitted = false;
 let url = "";
 </script>
 <div>
-	<Router url={url}>
-		<h1>{url}</h1>
-		<Route path="/diagram" component={Diagram} />
+	<Router bind:url={url}>
+		<Route path="/diagram"><Diagram url={url} /></Route>
 		<Route path="/">
 	<Home />
 		</Route>
