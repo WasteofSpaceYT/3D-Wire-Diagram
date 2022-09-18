@@ -62,8 +62,13 @@
 		const intersections = pointerRaycaster.intersectObjects(scene.children);
 
 		for (let i = 0; i < intersections.length; i++) {
-			// @ts-ignore
-			intersections[i].object.material.color.set(0xff0000);
+			let point = intersections[i].object.position
+			let dot = new THREE.Mesh(
+				new THREE.SphereGeometry(0.1, 32, 32),
+				new THREE.MeshBasicMaterial({ color: 0xff0000 })
+			);
+			dot.position.set(point.x, point.y, point.z);
+			scene.add(dot);
 		}
 
 		for (const wall of walls) {
