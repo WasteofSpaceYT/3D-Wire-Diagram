@@ -159,6 +159,7 @@
 		camera.rotation.z = Math.PI;
 		scene.add(camera);
 		const controls = new OrbitControls(camera, canvas);
+		controls.enablePan = false;
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		var light = new THREE.DirectionalLight(0xffffff, 10);
 		light.castShadow = true;
@@ -168,7 +169,6 @@
 </script>
 
 <canvas bind:this={canvas} style="w-full h-full">
-<div style="position: relative">DivShit</div>
 </canvas>
 
 <svelte:window
