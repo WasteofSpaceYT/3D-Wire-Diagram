@@ -62,7 +62,7 @@
 		const intersections = pointerRaycaster.intersectObjects(scene.children);
 
 		for (let i = 0; i < intersections.length; i++) {
-			let point = intersections[i].object.position
+			let point = intersections[i].point
 			console.log(intersections[i])
 			let dot = new THREE.Mesh(
 				new THREE.SphereGeometry(0.1, 32, 32),
