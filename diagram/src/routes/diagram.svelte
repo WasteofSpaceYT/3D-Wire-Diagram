@@ -168,7 +168,24 @@
 	});
 </script>
 <div>
+	<div style="overflow: scroll; height: 50px">
 	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	<button>Add Receptacle</button>
+	</div>
 <canvas bind:this={canvas} style="w-full h-full">
 </canvas>
 </div>
