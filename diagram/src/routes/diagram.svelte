@@ -97,7 +97,7 @@
 		loader.load("/receptacle.glb", (receptacles) => {
 			renderer.setAnimationLoop(render);
 			//@ts-ignore
-			console.log(receptacles.scene.children.children.length)
+			console.log(receptacles.scene.children[0].children)
 			for(let i = 0; i < receptacles.scene.children.length; i++){
 				console.log(receptacles.scene.children[i])
 			}
