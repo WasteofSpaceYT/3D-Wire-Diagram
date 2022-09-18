@@ -10,11 +10,11 @@ import { onMount } from "svelte";
 </script>
 <div style="margin:20px">
     Width: <input type="number" bind:value={width} on:change={() => {
-        document.getElementById("room").style.width = `${width}px`;
+        document.getElementById("room").style.width = `${width*30}px`;
     }} />ft
     <br />
     Height: <input type="number" bind:value={height} on:change={() => {
-        document.getElementById("room").style.height = `${height}px`;
+        document.getElementById("room").style.height = `${height*30}px`;
     }} />ft
     <div id="room" style="border: 1px solid black; margin: 25px">
     </div>
