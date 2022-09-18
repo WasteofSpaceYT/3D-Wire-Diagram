@@ -167,10 +167,11 @@
 		renderer.render(scene, camera);
 	});
 </script>
-
+<div>
+	<button>Add Receptacle</button>
 <canvas bind:this={canvas} style="w-full h-full">
 </canvas>
-
+</div>
 <svelte:window
 	on:resize={() => {
 		renderer.setSize(window.innerWidth, window.innerHeight);

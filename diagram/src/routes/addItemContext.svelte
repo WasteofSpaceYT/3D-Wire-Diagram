@@ -19,36 +19,9 @@ Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dad
     // browser/window dimension (height and width)
     let browser = { h: 0, y: 0 }
     // showMenu is state of context-menu visibility
-    let showMenu = false;
+    let showMenu = true;
     // to display some text
     let content;
-
-    function rightClickContextMenu(e){
-        showMenu = true
-        browser = {
-            w: window.innerWidth,
-            h: window.innerHeight
-        };
-        pos = {
-            x: e.clientX,
-            y: e.clientY
-        };
-        // If bottom part of context menu will be displayed
-        // after right-click, then change the position of the
-        // context menu. This position is controlled by `top` and `left`
-        // at inline style. 
-        // Instead of context menu is displayed from top left of cursor position
-        // when right-click occur, it will be displayed from bottom left.
-        if (browser.h -  pos.y < menu.h)
-            pos.y = pos.y - menu.h
-        if (browser.w -  pos.x < menu.w)
-            pos.x = pos.x - menu.w
-    }
-    function onPageClick(e){
-        // To make context menu disappear when
-        // mouse is clicked outside context menu
-        showMenu = false;
-    }
     function getContextMenuDimension(node){
         // This function will get context menu dimension
         // when navigation is shown => showMenu = true
@@ -61,6 +34,7 @@ Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dad
     }
     function addItem(){
         showMenu = false;
+        
     }
     function remove(){
         content.textContent = "Removed..."
@@ -160,6 +134,3 @@ Inspired from: Context Menu https://svelte.dev/repl/3a33725c3adb4f57b46b597f9dad
     </div>
 </nav>
 {/if}
-
-<svelte:window on:contextmenu|preventDefault={rightClickContextMenu} 
-on:click={onPageClick} />
