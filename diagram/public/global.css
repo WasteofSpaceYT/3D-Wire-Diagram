@@ -62,11 +62,8 @@ button:focus {
 	border-color: #666;
 }
 div.scroll {
-	background-color: #fed9ff;
-	width: 600px;
-	height: 150px;
-	overflow-x: hidden;
-	overflow-y: auto;
-	text-align: center;
-	padding: 20px;
-  }
+    overflow-x: scroll;
+    overflow-y:hidden;
+    width: 300px;
+    white-space: nowrap
+}
