@@ -47,7 +47,8 @@
         requestAnimationFrame(render);
 		for(const wall of walls){
 			if(wall.name == "NWall"){
-				console.log(wall)
+				//@ts-ignore
+				wall.material.color = new THREE.Color(0x00ff00);
 			}
 				let blockingFloor = false;
                 for(const corner of floorCorners){
