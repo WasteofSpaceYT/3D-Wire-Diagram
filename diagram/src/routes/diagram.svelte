@@ -168,7 +168,7 @@
 </script>
 
 <canvas bind:this={canvas} style="w-full h-full">
-<div style="position: absolute">DivShit</div>
+<div style="position: relative">DivShit</div>
 </canvas>
 
 <svelte:window
