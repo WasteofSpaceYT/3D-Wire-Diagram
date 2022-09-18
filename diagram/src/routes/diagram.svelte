@@ -98,7 +98,7 @@
 			renderer.setAnimationLoop(render);
 			for(let i = 0; i < receptacles.scene.children.length; i++){
 				//@ts-ignore
-				receptacles.scene.children[i].material.color = new THREE.Color(0x000000);
+				console.log(receptacles.scene.children[i])
 			}
 			scene.add(receptacles.scene)
 		},
