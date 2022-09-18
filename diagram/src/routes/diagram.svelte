@@ -8,8 +8,6 @@
 	import { PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
-	import * as dat from "dat.gui";
-	const gui = new dat.GUI()
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
@@ -58,9 +56,6 @@
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	}
-	//@ts-ignore
-	const guiFolder = gui.addFolder("Add Items");
-	guiFolder.open();
 	function render(time: number) {
 		requestAnimationFrame(render);
 		if (placing) {
@@ -172,7 +167,9 @@
 	});
 </script>
 
-<canvas bind:this={canvas} style="w-full h-full" />
+<canvas bind:this={canvas} style="w-full h-full">
+<div>DivShit</div>
+</canvas>
 
 <svelte:window
 	on:resize={() => {

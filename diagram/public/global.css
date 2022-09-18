@@ -61,6 +61,3 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
-.close-button close-bottom {
-	visibility: hidden;
-}
