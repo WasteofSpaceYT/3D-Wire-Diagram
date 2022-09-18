@@ -110,11 +110,11 @@
 						}
 						if(room.scene.children[i].name == "EWall"){
 							room.scene.children[i].scale.z = width;
-							room.scene.children[i].position.y = -height;
+							room.scene.children[i].position.z = -height;
 						}
 						if(room.scene.children[i].name == "WWall"){
 							room.scene.children[i].scale.z = width;
-							room.scene.children[i].position.y = height;
+							room.scene.children[i].position.z = height;
 						}
                     }
 				}
