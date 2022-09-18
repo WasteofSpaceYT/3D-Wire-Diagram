@@ -96,7 +96,7 @@
 		const loader = new GLTFLoader();
 		loader.load("/receptacle.glb", (receptacles) => {
 			renderer.setAnimationLoop(render);
-			for(let recep of receptacles.scene.children){
+			for(let i = 0; i < receptacles.scene.children.length; i++){
 				//@ts-ignore
 				recep.material.color = new THREE.Color(0x000000);
 			}
