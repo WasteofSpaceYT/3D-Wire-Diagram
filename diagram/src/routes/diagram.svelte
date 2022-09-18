@@ -96,6 +96,7 @@
 		const loader = new GLTFLoader();
 		loader.load("/receptacle.glb", (receptacles) => {
 			renderer.setAnimationLoop(render);
+			console.log(receptacles.scene.children.length)
 			for(let i = 0; i < receptacles.scene.children.length; i++){
 				//@ts-ignore
 				console.log(receptacles.scene.children[i])
