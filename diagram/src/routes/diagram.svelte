@@ -168,7 +168,7 @@
 	});
 </script>
 <div>
-	<div style="overflow-y: scroll; height: 50px">
+		<div style="overflow-x: scroll">
 	<button>Add Receptacle</button>
 	<button>Add Receptacle</button>
 	<button>Add Receptacle</button>
