@@ -94,7 +94,7 @@
 			alpha: true,
 		});
 		const loader = new GLTFLoader();
-		loader.load("/receptacles.gltf", (receptacles) => {
+		loader.load("/model.dae", (receptacles) => {
 			renderer.setAnimationLoop(render);
 			scene.add(receptacles.scene)
 		},
