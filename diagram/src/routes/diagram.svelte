@@ -54,7 +54,6 @@
 	function onPointerMove(event) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-		console.log(event.clientX, event.clientY);
 	}
 	function render(time: number) {
 		requestAnimationFrame(render);
@@ -64,6 +63,7 @@
 
 		for (let i = 0; i < intersections.length; i++) {
 			let point = intersections[i].object.position
+			console.log(intersections[i])
 			let dot = new THREE.Mesh(
 				new THREE.SphereGeometry(0.1, 32, 32),
 				new THREE.MeshBasicMaterial({ color: 0xff0000 })
