@@ -168,7 +168,7 @@
 	});
 </script>
 <div>
-		<div style="overflow-x: scroll">
+		<div style="overflow-x: scroll; display: inline-block">
 	<button>Add Receptacle</button>
 	<button>Add Receptacle</button>
 	<button>Add Receptacle</button>
