@@ -51,7 +51,7 @@
 					raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
 					const intersects = raycaster.intersectObjects([wall], true);
 					if(intersects.length > 0){
-						blockingFloor = true;
+						//blockingFloor = true;
 						break;
 					}
                 }
