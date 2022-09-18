@@ -100,7 +100,7 @@
 			console.log(receptacles.scene.children[0].children)
 			for(let i = 0; i < receptacles.scene.children[0].children.length; i++){
 				//@ts-ignore
-				receptacles.scene.children[0].children[i].material.color = new THREE.Color(0x000000)
+				//receptacles.scene.children[0].children[i].material.color = new THREE.Color(0x000000)
 			}
 			scene.add(receptacles.scene)
 		},
