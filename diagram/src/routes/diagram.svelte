@@ -97,7 +97,7 @@
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
                         walls.push(room.scene.children[i]);
 						if(room.scene.children[i].name == "NWall"){
-							room.scene.children[i].scale.x = 5;
+							room.scene.children[i].scale.z = 5;
 						}
                     }
 				}
