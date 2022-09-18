@@ -78,7 +78,7 @@
 				);
 				const intersects = raycaster.intersectObjects([wall], true);
 				if (intersects.length > 0) {
-					//blockingFloor = true;
+					blockingFloor = true;
 					break;
 				}
 			}
