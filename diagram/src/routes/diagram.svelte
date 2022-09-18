@@ -96,6 +96,9 @@
 									];
 									renderer.setAnimationLoop(render);
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
+						if(room.scene.children[i].name == "NWall"){
+							room.scene.children[i].visible = false;
+						}
                         walls.push(room.scene.children[i]);
                     }
 				}
