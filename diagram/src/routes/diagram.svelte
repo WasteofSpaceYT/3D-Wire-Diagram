@@ -46,12 +46,15 @@
         function render(time: number) {
         requestAnimationFrame(render);
 		for(const wall of walls){
+			if(wall.name == "NWall"){
+				console.log(wall)
+			}
 				let blockingFloor = false;
                 for(const corner of floorCorners){
 					raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
 					const intersects = raycaster.intersectObjects([wall], true);
 					if(intersects.length > 0){
-						//blockingFloor = true;
+						blockingFloor = true;
 						console.log(intersects)
 						break;
 					}
@@ -96,9 +99,6 @@
 									];
 									renderer.setAnimationLoop(render);
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
-						if(room.scene.children[i].name == "NWall"){
-							room.scene.children[i].visible = false;
-						}
                         walls.push(room.scene.children[i]);
                     }
 				}
