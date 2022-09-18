@@ -98,6 +98,7 @@
                         walls.push(room.scene.children[i]);
 						if(room.scene.children[i].name == "NWall"){
 							room.scene.children[i].scale.z = 5;
+							room.scene.children[i].position.x = width;
 						}
                     }
 				}
@@ -108,6 +109,7 @@
 		);
 		
 		camera.position.z = 10;
+		camera.rotation.z = Math.PI;
 		scene.add(camera);
 		const controls = new OrbitControls(camera, canvas);
 		renderer.setSize(window.innerWidth, window.innerHeight);
