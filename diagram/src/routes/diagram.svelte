@@ -46,17 +46,12 @@
         function render(time: number) {
         requestAnimationFrame(render);
 		for(const wall of walls){
-			if(wall.name == "NWall"){
-				//@ts-ignore
-				wall.material.color = new THREE.Color(0x00ff00);
-			}
 				let blockingFloor = false;
                 for(const corner of floorCorners){
 					raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
 					const intersects = raycaster.intersectObjects([wall], true);
 					if(intersects.length > 0){
 						blockingFloor = true;
-						console.log(intersects)
 						break;
 					}
                 }
@@ -101,6 +96,9 @@
 									renderer.setAnimationLoop(render);
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
                         walls.push(room.scene.children[i]);
+						if(room.scene.children[i].name == "NWall"){
+							room.scene.children[i].scale.x = 5;
+						}
                     }
 				}
 				scene.add(room.scene);
