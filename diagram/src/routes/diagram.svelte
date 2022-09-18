@@ -96,6 +96,7 @@
 		const loader = new GLTFLoader();
 		loader.load("/receptacles.gltf", (receptacles) => {
 			scene.add(receptacles.scene)
+			renderer.setAnimationLoop(render);
 		},
 			//"/room.gltf",
 			/*(room) => {
