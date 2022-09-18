@@ -5,7 +5,7 @@
 	import * as THREE from "three";
 	//@ts-ignore
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-	import { PerspectiveCamera } from "three";
+	import { Loader, PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
 	let canvas: HTMLCanvasElement;
@@ -94,9 +94,11 @@
 			alpha: true,
 		});
 		const loader = new GLTFLoader();
-		loader.load(
-			"/room.gltf",
-			(room) => {
+		loader.load("/receptacles.gltf", (receptacles) => {
+			scene.add(receptacles.scene)
+		},
+			//"/room.gltf",
+			/*(room) => {
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
 						let floor = room.scene.children[i];
@@ -150,10 +152,11 @@
 					}
 				}
 				scene.add(room.scene);
-			},
+			},*/
 			console.log,
 			console.error
-		);
+			);
+
 
 		camera.position.z = 10;
 		camera.rotation.z = Math.PI;
