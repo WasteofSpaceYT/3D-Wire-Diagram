@@ -1,4 +1,8 @@
 <script lang="ts">
+	// North: width
+	// South: -width
+
+
 	import * as THREE from "three";
 	//@ts-ignore
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -97,8 +101,20 @@
 					} else if(room.scene.children[i].name.toLowerCase().includes("wall")){
                         walls.push(room.scene.children[i]);
 						if(room.scene.children[i].name == "NWall"){
-							room.scene.children[i].scale.z = 5;
+							room.scene.children[i].scale.z = height;
 							room.scene.children[i].position.x = width;
+						}
+						if(room.scene.children[i].name == "SWall"){
+							room.scene.children[i].scale.z = height;
+							room.scene.children[i].position.x = -width;
+						}
+						if(room.scene.children[i].name == "EWall"){
+							room.scene.children[i].scale.z = width;
+							room.scene.children[i].position.x = -height;
+						}
+						if(room.scene.children[i].name == "WWall"){
+							room.scene.children[i].scale.z = width;
+							room.scene.children[i].position.x = height;
 						}
                     }
 				}
