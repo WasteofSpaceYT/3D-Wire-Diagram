@@ -13,6 +13,7 @@
 	let renderer: THREE.WebGLRenderer;
 	let width;
 	let height;
+	let placing = false;
 	let url = location.href;
 	try {
 		let params = url.split("?")[1].split("&");
@@ -57,21 +58,17 @@
 	}
 	function render(time: number) {
 		requestAnimationFrame(render);
-		pointerRaycaster.setFromCamera(pointer, camera);
+		if (placing) {
+			pointerRaycaster.setFromCamera(pointer, camera);
 
-		const intersections = pointerRaycaster.intersectObjects(scene.children);
-
-		for (let i = 0; i < intersections.length; i++) {
-			let point = intersections[i].point
-			console.log(intersections[i])
-			let dot = new THREE.Mesh(
-				new THREE.SphereGeometry(0.1, 32, 32),
-				new THREE.MeshBasicMaterial({ color: 0xff0000 })
+			const intersections = pointerRaycaster.intersectObjects(
+				scene.children
 			);
-			dot.position.set(point.x, point.y, point.z);
-			scene.add(dot);
-		}
 
+			for (let i = 0; i < intersections.length; i++) {
+				let point = intersections[i].point;
+			}
+		}
 		for (const wall of walls) {
 			let blockingFloor = false;
 			for (const corner of floorCorners) {
