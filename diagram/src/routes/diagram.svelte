@@ -55,7 +55,7 @@
 	const pointer = new THREE.Vector2();
 	function onPointerMove(event) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		pointer.y = -(event.clientY / window.innerHeight) * 2;
 	}
 	function render(time: number) {
 		requestAnimationFrame(render);
