@@ -94,7 +94,7 @@
 			alpha: true,
 		});
 		const loader = new GLTFLoader();
-		loader.load("/receptacle.glb", (receptacles) => {
+		loader.load(/*"/receptacle.glb", (receptacles) => {
 			renderer.setAnimationLoop(render);
 			//@ts-ignore
 			console.log(receptacles.scene.children[0].children)
@@ -102,10 +102,10 @@
 				//@ts-ignore
 				//receptacles.scene.children[0].children[i].material.color = new THREE.Color(0x000000)
 			}
-			scene.add(receptacles.scene)
-		},
-			//"/room.gltf",
-			/*(room) => {
+			scene.add(receptacles.scene)/
+		},*/
+			"/room.gltf",
+			(room) => {
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
 						let floor = room.scene.children[i];
@@ -159,7 +159,7 @@
 					}
 				}
 				scene.add(room.scene);
-			},*/
+			},
 			console.log,
 			console.error
 			);
