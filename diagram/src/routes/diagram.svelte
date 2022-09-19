@@ -91,7 +91,7 @@
 	}
 	const addCube = () => {
 		cube = new THREE.Mesh(
-			new THREE.BoxGeometry(0.75, 1, 0.5),
+			new THREE.BoxGeometry(2.75/12, 4.5/12, 0.25/12),
 			new THREE.MeshBasicMaterial({ color: new THREE.Color() })
 		);
 		placing = true
