@@ -55,7 +55,7 @@
 	const pointer = new THREE.Vector2();
 	function onPointerMove(event) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-		pointer.y = -(event.clientY / window.innerHeight) * 2;
+		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	}
 	function render(time: number) {
 		requestAnimationFrame(render);
@@ -68,9 +68,7 @@
 
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
-				console.log(point)
-				cube.position.set(point.x, point.y, point.z);
-				console.log(cube.position)
+				cube.position.set(point.x, point.y + 1, point.z);
 			}
 		}
 		for (const wall of walls) {
