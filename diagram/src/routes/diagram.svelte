@@ -94,7 +94,7 @@
 	const addCube = () => {
 		cube = new THREE.Mesh(
 			new THREE.BoxGeometry(0.75, 1, 0.5),
-			new THREE.MeshBasicMaterial({ color: THREE.Color() })
+			new THREE.MeshBasicMaterial({ color: new THREE.Color() })
 		);
 		placing = true
 		scene.add(cube);
