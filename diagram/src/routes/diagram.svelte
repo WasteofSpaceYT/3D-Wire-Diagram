@@ -69,7 +69,7 @@
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
 				console.log(point)
-				cube.position.set(point)
+				cube.position.set(point.x, point.y, point.z);
 				console.log(cube.position)
 			}
 		}
