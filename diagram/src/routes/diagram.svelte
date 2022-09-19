@@ -5,7 +5,7 @@
 	import * as THREE from "three";
 	//@ts-ignore
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-	import { Loader, PerspectiveCamera } from "three";
+	import { CubeCamera, Loader, PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
 	let canvas: HTMLCanvasElement;
@@ -14,6 +14,7 @@
 	let width;
 	let height;
 	let placing = false;
+	let cube;
 	let url = location.href;
 	try {
 		let params = url.split("?")[1].split("&");
@@ -67,6 +68,7 @@
 
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
+				cube.position.set(point)
 			}
 		}
 		for (const wall of walls) {
@@ -86,6 +88,14 @@
 		}
 
 		renderer.render(scene, camera);
+	}
+	const addCube = () => {
+		cube = new THREE.Mesh(
+			new THREE.BoxGeometry(1, 1, 1),
+			new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+		);
+		placing = true
+		scene.add(cube);
 	}
 	onMount(() => {
 		renderer = new THREE.WebGLRenderer({
@@ -179,7 +189,7 @@
 </script>
 <div>
 		<div class="scroll">
-	<button>Add Receptacle</button>
+	<button on:click={addCube}>Add Receptacle</button>
 	<button>Add Receptacle</button>
 	<button>Add Receptacle</button>
 	<button>Add Receptacle</button>
