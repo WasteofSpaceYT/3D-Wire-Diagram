@@ -69,6 +69,7 @@
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
 				cube.position.set(point)
+				console.log(cube.position)
 			}
 		}
 		for (const wall of walls) {
