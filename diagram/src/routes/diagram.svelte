@@ -75,8 +75,6 @@
 					printed = true;
 				}
 				cube.position.set(point.x, point.y + 1, point.z);
-				console.log(cube.position)
-				console.log(point)
 			}
 		}
 		for (const wall of walls) {
