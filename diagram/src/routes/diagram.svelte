@@ -71,7 +71,7 @@
 			//for (let i = 2; i < intersections.length; i++) {
 				let point = intersections[2].point;
 				cube.position.set(point.x, point.y + 1, point.z);
-				cube.rotation = intersections[2].object.rotation;
+				cube.rotation.set(intersections[2].object.rotation.x, intersections[2].object.rotation.y, intersections[2].object.rotation.z);
 			//}
 		}
 		for (const wall of walls) {
