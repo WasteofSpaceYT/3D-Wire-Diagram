@@ -70,11 +70,10 @@
 
 			//for (let i = 2; i < intersections.length; i++) {
 				if(intersections != undefined){
-					console.log(intersections.length)
-					console.log(Math.round(intersections.length/2))
+					console.log(intersections[Math.round(intersections.length/2)].object.rotation)
 				let point = intersections[Math.round(intersections.length/2)].point;
 				cube.position.set(point.x, point.y + 1, point.z);
-				cube.rotation.set(intersections[2].object.rotation.x, intersections[2].object.rotation.y, intersections[2].object.rotation.z);
+				cube.rotation.set(intersections[Math.round(intersections.length/2)].object.rotation.x, intersections[Math.round(intersections.length/2)].object.rotation.y, intersections[Math.round(intersections.length/2)].object.rotation.z);
 				}
 			//}
 		}
