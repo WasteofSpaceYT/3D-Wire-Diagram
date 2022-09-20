@@ -56,6 +56,8 @@
 	let SWall;
 	let EWall;
 	let WWall;
+	let NSRot = new THREE.Euler(0, 0, Math.PI/2)
+	let EWRot = new THREE.Euler(Math.PI/2, Math.PI/2, 0)
 	const raycaster = new THREE.Raycaster();
 	const pointerRaycaster = new THREE.Raycaster();
 	const pointer = new THREE.Vector2();
@@ -72,9 +74,8 @@
 				scene.children
 			);
 
-			for (let i = 2; i < intersections.length; i++) {
+			for (let i = 0; i < intersections.length; i++) {
 				if (intersections != undefined) {
-					console.log(intersections[i].object.name);
 					let point = intersections[i].point;
 					cube.position.set(point.x, point.y + 1, point.z);
 					cube.rotation.set(
@@ -135,9 +136,9 @@
 					if (room.scene.children[i].name == "Floor") {
 						let floorTemp = room.scene.children[i];
 						floor = new Mesh(
-							new THREE.BoxGeometry(width, 0, height),
+							new THREE.BoxGeometry(width, 0.05, height),
 							new THREE.MeshBasicMaterial({
-								color: new THREE.Color(0x000000),
+								color: new THREE.Color(0x808080),
 							})
 						);
 						NWall = new Mesh(
@@ -146,33 +147,28 @@
 								color: new THREE.Color(0x000000),
 							})
 						);
-						NWall.position.x = width;
+						NWall.position.x = width/2;
 						SWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, height),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
-						SWall.position.x = -width;
+						SWall.position.x = -width/2;
 						EWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
-						EWall.position.z = height;
+						EWall.position.z = height/2;
 						WWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
-						WWall.position.z = -height;
-						floor.position.set(
-							floorTemp.position.x,
-							floorTemp.position.y,
-							floorTemp.position.z
-						);
+						WWall.position.z = -height/2;
 
 						floorCorners = [
 							new THREE.Vector3(
@@ -202,45 +198,39 @@
 							.toLowerCase()
 							.includes("wall")
 					) {
-						walls.push(room.scene.children[i]);
+						//walls.push(room.scene.children[i]);
 						if (room.scene.children[i].name == "NWall") {
 							room.scene.children[i].scale.z = height;
 							room.scene.children[i].position.x = width;
-							NWall.rotation.set(
-								room.scene.children[i].rotation.x,
-								room.scene.children[i].rotation.y,
-								room.scene.children[i].rotation.z
-							);
 						}
 						if (room.scene.children[i].name == "SWall") {
 							room.scene.children[i].scale.z = height;
 							room.scene.children[i].position.x = -width;
-							SWall.rotation.set(
-								room.scene.children[i].rotation.x,
-								room.scene.children[i].rotation.y,
-								room.scene.children[i].rotation.z
-							);
 						}
 						if (room.scene.children[i].name == "EWall") {
 							room.scene.children[i].scale.z = width;
 							room.scene.children[i].position.z = -height;
-							EWall.rotation.set(
-								room.scene.children[i].rotation.x,
-								room.scene.children[i].rotation.y,
-								room.scene.children[i].rotation.z
-							);
 						}
 						if (room.scene.children[i].name == "WWall") {
 							room.scene.children[i].scale.z = width;
 							room.scene.children[i].position.z = height;
-							WWall.rotation.set(
-								room.scene.children[i].rotation.x,
-								room.scene.children[i].rotation.y,
-								room.scene.children[i].rotation.z
-							);
 						}
 					}
 				}
+				floor.name = "Floor";
+				NWall.name = "NWall";
+				SWall.name = "SWall";
+				EWall.name = "EWall";
+				WWall.name = "WWall";
+				NWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
+				SWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
+				EWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
+				WWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
+				NWall.position.y = 3;
+				SWall.position.y = 3;
+				EWall.position.y = 3;
+				WWall.position.y = 3;
+				walls = [NWall, SWall, EWall, WWall];
 				scene.add(floor);
 				scene.add(NWall);
 				scene.add(SWall);
@@ -252,12 +242,13 @@
 		);
 
 		camera.position.z = 10;
-		camera.rotation.z = Math.PI;
+		camera.position.y = 5;
+		camera.rotation.z = new THREE.Euler(0,0,Math.PI/4).z;
 		scene.add(camera);
 		const controls = new OrbitControls(camera, canvas);
 		controls.enablePan = false;
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		var light = new THREE.DirectionalLight(0xffffff, 10);
+		var light = new THREE.AmbientLight(0xffffff, 10);
 		light.castShadow = true;
 		scene.add(light);
 		renderer.render(scene, camera);
@@ -266,12 +257,12 @@
 
 <div>
 	<div class="scroll">
-		<button on:click={addCube}>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
+		<button on:click={addCube}>Add Duplex</button>
+		<button>Add Quad</button>
+		<button>Add Duplex (Decora)</button>
+		<button>Add Quad (Decora)</button>
+		<button>Add Switch</button>
+		<button>Add Switch (Decora)</button>
 		<button>Add Receptacle</button>
 		<button>Add Receptacle</button>
 		<button>Add Receptacle</button>
