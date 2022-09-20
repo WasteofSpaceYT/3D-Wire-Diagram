@@ -52,6 +52,10 @@
 	let floorCorners;
 	let printed = false;
 	let floor;
+	let NWall;
+	let SWall;
+	let EWall;
+	let WWall;
 	const raycaster = new THREE.Raycaster();
 	const pointerRaycaster = new THREE.Raycaster();
 	const pointer = new THREE.Vector2();
@@ -69,11 +73,15 @@
 			);
 
 			for (let i = 2; i < intersections.length; i++) {
-				if(intersections != undefined){
-					console.log(intersections[i].object.name)
-				let point = intersections[i].point;
-				cube.position.set(point.x, point.y + 1, point.z);
-				cube.rotation.set(intersections[i].object.rotation.x, intersections[i].object.rotation.y, intersections[i].object.rotation.z);
+				if (intersections != undefined) {
+					console.log(intersections[i].object.name);
+					let point = intersections[i].point;
+					cube.position.set(point.x, point.y + 1, point.z);
+					cube.rotation.set(
+						intersections[i].object.rotation.x,
+						intersections[i].object.rotation.y,
+						intersections[i].object.rotation.z
+					);
 				}
 			}
 		}
@@ -97,12 +105,12 @@
 	}
 	const addCube = () => {
 		cube = new THREE.Mesh(
-			new THREE.BoxGeometry(2.75/12, 4.5/12, 0.25/12),
+			new THREE.BoxGeometry(2.75 / 12, 4.5 / 12, 0.25 / 12),
 			new THREE.MeshBasicMaterial({ color: new THREE.Color() })
 		);
-		placing = true
+		placing = true;
 		scene.add(cube);
-	}
+	};
 	onMount(() => {
 		renderer = new THREE.WebGLRenderer({
 			canvas: canvas,
@@ -110,7 +118,8 @@
 			alpha: true,
 		});
 		const loader = new GLTFLoader();
-		loader.load(/*"/receptacle.glb", (receptacles) => {
+		loader.load(
+			/*"/receptacle.glb", (receptacles) => {
 			renderer.setAnimationLoop(render);
 			//@ts-ignore
 			console.log(receptacles.scene.children[0].children)
@@ -131,40 +140,40 @@
 								color: new THREE.Color(0x000000),
 							})
 						);
-						let NWall = new Mesh(
+						NWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, height),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						NWall.position.x = width;
-						let SWall = new Mesh(
+						SWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, height),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						SWall.position.x = -width;
-						let EWall = new Mesh(
+						EWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						EWall.position.z = height;
-						let WWall = new Mesh(
+						WWall = new Mesh(
 							new THREE.BoxGeometry(6, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						WWall.position.z = -height;
-						floor.position.set(floorTemp.position.x, floorTemp.position.y, floorTemp.position.z);
-						scene.add(floor)
-						scene.add(NWall)
-						scene.add(SWall)
-						scene.add(EWall)
-						scene.add(WWall)
+						floor.position.set(
+							floorTemp.position.x,
+							floorTemp.position.y,
+							floorTemp.position.z
+						);
+
 						floorCorners = [
 							new THREE.Vector3(
 								floor.position.x + floor.scale.x - 0.2,
@@ -197,27 +206,50 @@
 						if (room.scene.children[i].name == "NWall") {
 							room.scene.children[i].scale.z = height;
 							room.scene.children[i].position.x = width;
+							NWall.rotation.set(
+								room.scene.children[i].rotation.x,
+								room.scene.children[i].rotation.y,
+								room.scene.children[i].rotation.z
+							);
 						}
 						if (room.scene.children[i].name == "SWall") {
 							room.scene.children[i].scale.z = height;
 							room.scene.children[i].position.x = -width;
+							SWall.rotation.set(
+								room.scene.children[i].rotation.x,
+								room.scene.children[i].rotation.y,
+								room.scene.children[i].rotation.z
+							);
 						}
 						if (room.scene.children[i].name == "EWall") {
 							room.scene.children[i].scale.z = width;
 							room.scene.children[i].position.z = -height;
+							EWall.rotation.set(
+								room.scene.children[i].rotation.x,
+								room.scene.children[i].rotation.y,
+								room.scene.children[i].rotation.z
+							);
 						}
 						if (room.scene.children[i].name == "WWall") {
 							room.scene.children[i].scale.z = width;
 							room.scene.children[i].position.z = height;
+							WWall.rotation.set(
+								room.scene.children[i].rotation.x,
+								room.scene.children[i].rotation.y,
+								room.scene.children[i].rotation.z
+							);
 						}
 					}
 				}
-				scene.add(room.scene);
+				scene.add(floor);
+				scene.add(NWall);
+				scene.add(SWall);
+				scene.add(EWall);
+				scene.add(WWall);
 			},
 			console.log,
 			console.error
-			);
-
+		);
 
 		camera.position.z = 10;
 		camera.rotation.z = Math.PI;
@@ -231,27 +263,27 @@
 		renderer.render(scene, camera);
 	});
 </script>
+
 <div>
-		<div class="scroll">
-	<button on:click={addCube}>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
-	<button>Add Receptacle</button>
+	<div class="scroll">
+		<button on:click={addCube}>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
+		<button>Add Receptacle</button>
 	</div>
-<canvas bind:this={canvas} style="w-full h-full">
-</canvas>
+	<canvas bind:this={canvas} style="w-full h-full" />
 </div>
 <svelte:window
 	on:resize={() => {
