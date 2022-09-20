@@ -68,6 +68,8 @@
 
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
+				console.log(intersections[i].object.position)
+				console.log(point)
 				cube.position.set(point.x, point.y + 1, point.z);
 				console.log(cube.position)
 				console.log(point)
