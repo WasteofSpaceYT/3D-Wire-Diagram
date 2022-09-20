@@ -2,12 +2,15 @@
 	// North: width
 	// South: -width
 
+	// Imports
 	import * as THREE from "three";
 	//@ts-ignore
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 	import { CubeCamera, Loader, Mesh, PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
+
+	// Variables
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
@@ -15,6 +18,22 @@
 	let height;
 	let placing = false;
 	let cube;
+	let floorCorners;
+	let wallHeight = 9
+	let floor;
+	let NWall;
+	let SWall;
+	let EWall;
+	let WWall;
+	let NSRot = new THREE.Euler(0, 0, Math.PI/2)
+	let EWRot = new THREE.Euler(Math.PI/2, Math.PI/2, 0)
+
+	// Raycasters for object placement and wall hiding
+	const raycaster = new THREE.Raycaster();
+	const pointerRaycaster = new THREE.Raycaster();
+	const pointer = new THREE.Vector2();
+
+	// Get the room size from the url
 	let url = location.href;
 	try {
 		let params = url.split("?")[1].split("&");
@@ -41,32 +60,27 @@
 		width = 5;
 		height = 5;
 	}
+
+	// Empty wall array
 	let walls: THREE.Object3D<THREE.Event>[] = [];
-	function assembleScene() {}
+
+	// Create camera
 	const camera = new PerspectiveCamera(
 		75,
 		window.innerWidth / window.innerHeight,
 		0.0001,
 		100
 	);
-	let floorCorners;
-	let printed = false;
-	let floor;
-	let NWall;
-	let SWall;
-	let EWall;
-	let WWall;
-	let NSRot = new THREE.Euler(0, 0, Math.PI/2)
-	let EWRot = new THREE.Euler(Math.PI/2, Math.PI/2, 0)
-	const raycaster = new THREE.Raycaster();
-	const pointerRaycaster = new THREE.Raycaster();
-	const pointer = new THREE.Vector2();
+
+	// change ponter position for object placement raycasting
 	function onPointerMove(event) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	}
+	// Animation loop render
 	function render(time: number) {
 		requestAnimationFrame(render);
+		// Object placement raycasting
 		if (placing) {
 			pointerRaycaster.setFromCamera(pointer, camera);
 
@@ -86,6 +100,7 @@
 				}
 			}
 		}
+		// Wall hiding raycasting
 		for (const wall of walls) {
 			let blockingFloor = false;
 			for (const corner of floorCorners) {
@@ -104,6 +119,7 @@
 
 		renderer.render(scene, camera);
 	}
+	// Add receptacle to scene
 	const addCube = () => {
 		cube = new THREE.Mesh(
 			new THREE.BoxGeometry(2.75 / 12, 4.5 / 12, 0.25 / 12),
@@ -113,11 +129,13 @@
 		scene.add(cube);
 	};
 	onMount(() => {
+		// Create renderer
 		renderer = new THREE.WebGLRenderer({
 			canvas: canvas,
 			antialias: true,
 			alpha: true,
 		});
+		// Pretty much useless model loader that's only here because I used it before
 		const loader = new GLTFLoader();
 		loader.load(
 			/*"/receptacle.glb", (receptacles) => {
@@ -135,6 +153,8 @@
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
 						let floorTemp = room.scene.children[i];
+
+						// Create floor and walls
 						floor = new Mesh(
 							new THREE.BoxGeometry(width, 0.05, height),
 							new THREE.MeshBasicMaterial({
@@ -142,34 +162,35 @@
 							})
 						);
 						NWall = new Mesh(
-							new THREE.BoxGeometry(6, 0.05, height),
+							new THREE.BoxGeometry(9, 0.05, height),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						NWall.position.x = width/2;
 						SWall = new Mesh(
-							new THREE.BoxGeometry(6, 0.05, height),
+							new THREE.BoxGeometry(9, 0.05, height),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						SWall.position.x = -width/2;
 						EWall = new Mesh(
-							new THREE.BoxGeometry(6, 0.05, width),
+							new THREE.BoxGeometry(9, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						EWall.position.z = height/2;
 						WWall = new Mesh(
-							new THREE.BoxGeometry(6, 0.05, width),
+							new THREE.BoxGeometry(9, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						WWall.position.z = -height/2;
-
+						
+						// Set the floor corners for wall hiding
 						floorCorners = [
 							new THREE.Vector3(
 								floor.position.x + floor.scale.x - 0.2,
@@ -217,6 +238,8 @@
 						}
 					}
 				}
+
+				// Set object names, rotation, and position
 				floor.name = "Floor";
 				NWall.name = "NWall";
 				SWall.name = "SWall";
@@ -226,11 +249,13 @@
 				SWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
 				EWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
 				WWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
-				NWall.position.y = 3;
-				SWall.position.y = 3;
-				EWall.position.y = 3;
-				WWall.position.y = 3;
+				NWall.position.y = wallHeight/2;
+				SWall.position.y = wallHeight/2;
+				EWall.position.y = wallHeight/2;
+				WWall.position.y = wallHeight/2;
 				walls = [NWall, SWall, EWall, WWall];
+
+				// Add objects to scene
 				scene.add(floor);
 				scene.add(NWall);
 				scene.add(SWall);
@@ -240,17 +265,23 @@
 			console.log,
 			console.error
 		);
-
+		// Set camera position and rotation, then add to scene
 		camera.position.z = 10;
 		camera.position.y = 5;
 		camera.rotation.z = new THREE.Euler(0,0,Math.PI/4).z;
 		scene.add(camera);
+
+		// Add camera controls
 		const controls = new OrbitControls(camera, canvas);
 		controls.enablePan = false;
+
 		renderer.setSize(window.innerWidth, window.innerHeight);
+		
+		// Add lights
 		var light = new THREE.AmbientLight(0xffffff, 10);
 		light.castShadow = true;
 		scene.add(light);
+
 		renderer.render(scene, camera);
 	});
 </script>
@@ -278,6 +309,7 @@
 </div>
 <svelte:window
 	on:resize={() => {
+		// Update camera aspect ratio and renderer size
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
