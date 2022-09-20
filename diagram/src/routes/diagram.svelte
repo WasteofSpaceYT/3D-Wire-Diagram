@@ -50,6 +50,7 @@
 		100
 	);
 	let floorCorners;
+	let printed = false;
 	let floor;
 	const raycaster = new THREE.Raycaster();
 	const pointerRaycaster = new THREE.Raycaster();
@@ -69,11 +70,9 @@
 
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
-				if(point.x > floor.scale.x){
-					point.x = floor.scale.x;
-				}
-				if(point.z > floor.scale.z){
-					point.z = floor.scale.z;
+				if(printed == false){
+					console.log(intersections)
+					printed = true;
 				}
 				cube.position.set(point.x, point.y + 1, point.z);
 				console.log(cube.position)
