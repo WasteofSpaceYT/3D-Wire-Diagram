@@ -68,14 +68,14 @@
 				scene.children
 			);
 
-			for (let i = 2; i < intersections.length; i++) {
-				let point = intersections[i].point;
+			//for (let i = 2; i < intersections.length; i++) {
+				let point = intersections[2].point;
 				if(printed == false){
 					console.log(intersections)
 					printed = true;
 				}
 				cube.position.set(point.x, point.y + 1, point.z);
-			}
+			//}
 		}
 		for (const wall of walls) {
 			let blockingFloor = false;
