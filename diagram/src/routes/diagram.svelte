@@ -135,24 +135,6 @@
 			antialias: true,
 			alpha: true,
 		});
-		// Pretty much useless model loader that's only here because I used it before
-		const loader = new GLTFLoader();
-		loader.load(
-			/*"/receptacle.glb", (receptacles) => {
-			renderer.setAnimationLoop(render);
-			//@ts-ignore
-			console.log(receptacles.scene.children[0].children)
-			for(let i = 0; i < receptacles.scene.children[0].children.length; i++){
-				//@ts-ignore
-				//receptacles.scene.children[0].children[i].material.color = new THREE.Color(0x000000)
-			}
-			scene.add(receptacles.scene)/
-		},*/
-			"/room.gltf",
-			(room) => {
-				for (let i = 0; i < room.scene.children.length; i++) {
-					if (room.scene.children[i].name == "Floor") {
-						let floorTemp = room.scene.children[i];
 
 						// Create floor and walls
 						floor = new Mesh(
@@ -193,66 +175,44 @@
 						// Set the floor corners for wall hiding
 						floorCorners = [
 							new THREE.Vector3(
-								floor.position.x + floor.scale.x - 0.2,
+								floor.position.x + (floor.scale.x*2),
 								floor.position.y * 2,
-								floor.position.z + floor.scale.z - 0.2
+								floor.position.z + (floor.scale.z*2)
 							),
 							new THREE.Vector3(
-								floor.position.x + floor.scale.x - 0.2,
+								floor.position.x + (floor.scale.x*2),
 								floor.position.y * 2,
-								floor.position.z - floor.scale.z + 0.2
+								floor.position.z - (floor.scale.z*2)
 							),
 							new THREE.Vector3(
-								floor.position.x - floor.scale.x + 0.2,
+								floor.position.x - (floor.scale.x*2),
 								floor.position.y * 2,
-								floor.position.z - floor.scale.z + 0.2
+								floor.position.z - (floor.scale.z*2)
 							),
 							new THREE.Vector3(
-								floor.position.x - floor.scale.x + 0.2,
+								floor.position.x - (floor.scale.x*2),
 								floor.position.y * 2,
-								floor.position.z + floor.scale.z - 0.2
+								floor.position.z + (floor.scale.z*2)
 							),
 						];
 						renderer.setAnimationLoop(render);
-					} else if (
-						room.scene.children[i].name
-							.toLowerCase()
-							.includes("wall")
-					) {
-						//walls.push(room.scene.children[i]);
-						if (room.scene.children[i].name == "NWall") {
-							room.scene.children[i].scale.z = height;
-							room.scene.children[i].position.x = width;
-						}
-						if (room.scene.children[i].name == "SWall") {
-							room.scene.children[i].scale.z = height;
-							room.scene.children[i].position.x = -width;
-						}
-						if (room.scene.children[i].name == "EWall") {
-							room.scene.children[i].scale.z = width;
-							room.scene.children[i].position.z = -height;
-						}
-						if (room.scene.children[i].name == "WWall") {
-							room.scene.children[i].scale.z = width;
-							room.scene.children[i].position.z = height;
-						}
-					}
-				}
-
-				// Set object names, rotation, and position
+				// Set object names
 				floor.name = "Floor";
 				NWall.name = "NWall";
 				SWall.name = "SWall";
 				EWall.name = "EWall";
 				WWall.name = "WWall";
+				// Rotation
 				NWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
 				SWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
 				EWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
 				WWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
+				// Position
 				NWall.position.y = wallHeight/2;
 				SWall.position.y = wallHeight/2;
 				EWall.position.y = wallHeight/2;
 				WWall.position.y = wallHeight/2;
+
 				walls = [NWall, SWall, EWall, WWall];
 
 				// Add objects to scene
@@ -261,10 +221,7 @@
 				scene.add(SWall);
 				scene.add(EWall);
 				scene.add(WWall);
-			},
-			console.log,
-			console.error
-		);
+
 		// Set camera position and rotation, then add to scene
 		camera.position.z = 10;
 		camera.position.y = 5;
@@ -305,6 +262,10 @@
 		<button>Add Receptacle</button>
 		<button>Add Receptacle</button>
 	</div>
+	<form>
+		<input type="radio" name="options" id="1">Floor
+		<input type="radio" name="options" id="2">Ceiling
+	</form>
 	<canvas bind:this={canvas} style="w-full h-full" />
 </div>
 <svelte:window
