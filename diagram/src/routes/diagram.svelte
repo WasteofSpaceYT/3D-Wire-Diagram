@@ -68,7 +68,7 @@
 				scene.children
 			);
 
-			for (let i = 0; i < intersections.length/2; i++) {
+			for (let i = 2; i < intersections.length; i++) {
 				let point = intersections[i].point;
 				if(printed == false){
 					console.log(intersections)
