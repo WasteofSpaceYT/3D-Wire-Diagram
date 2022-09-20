@@ -5,14 +5,14 @@ import Home from "./routes/home.svelte";
 let isSubmitted = false;
 
 /*
-<Router>
+
+*/
+</script>
+<div>
+	<Router>
 		<Route path="/diagram" component={Diagram} />
 		<Route path="/">
 	<Home />
 		</Route>
 	</Router>
-*/
-</script>
-<div>
-	<Diagram />
 </div>
