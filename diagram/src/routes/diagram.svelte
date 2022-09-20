@@ -50,6 +50,7 @@
 		100
 	);
 	let floorCorners;
+	let floor;
 	const raycaster = new THREE.Raycaster();
 	const pointerRaycaster = new THREE.Raycaster();
 	const pointer = new THREE.Vector2();
@@ -68,8 +69,15 @@
 
 			for (let i = 0; i < intersections.length; i++) {
 				let point = intersections[i].point;
-				console.log(intersections[i].object.position)
-				console.log(point)
+				if(point.x > floor.scale.x){
+					point.x = floor.scale.x;
+				}
+				if(point.y > floor.scale.y){
+					point.y = floor.scale.y;
+				}
+				if(point.z > floor.scale.z){
+					point.z = floor.scale.z;
+				}
 				cube.position.set(point.x, point.y + 1, point.z);
 				console.log(cube.position)
 				console.log(point)
@@ -122,7 +130,7 @@
 			(room) => {
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
-						let floor = room.scene.children[i];
+						floor = room.scene.children[i];
 						floor.scale.setX(width);
 						floor.scale.setZ(height);
 						floorCorners = [
