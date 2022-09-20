@@ -68,14 +68,14 @@
 				scene.children
 			);
 
-			//for (let i = 2; i < intersections.length; i++) {
+			for (let i = 2; i < intersections.length; i++) {
 				if(intersections != undefined){
-					console.log(intersections[Math.round(intersections.length/2)].object.name)
-				let point = intersections[Math.round(intersections.length/2)].point;
+					console.log(intersections[i].object.name)
+				let point = intersections[i].point;
 				cube.position.set(point.x, point.y + 1, point.z);
-				cube.rotation.set(intersections[Math.round(intersections.length/2)].object.rotation.x, intersections[Math.round(intersections.length/2)].object.rotation.y, intersections[Math.round(intersections.length/2)].object.rotation.z);
+				cube.rotation.set(intersections[i].object.rotation.x, intersections[i].object.rotation.y, intersections[i].object.rotation.z);
 				}
-			//}
+			}
 		}
 		for (const wall of walls) {
 			let blockingFloor = false;
