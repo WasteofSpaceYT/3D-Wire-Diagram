@@ -70,11 +70,8 @@
 
 			//for (let i = 2; i < intersections.length; i++) {
 				let point = intersections[2].point;
-				if(printed == false){
-					console.log(intersections)
-					printed = true;
-				}
 				cube.position.set(point.x, point.y + 1, point.z);
+				cube.rotation = intersections[2].object.rotation;
 			//}
 		}
 		for (const wall of walls) {
