@@ -5,7 +5,7 @@
 	import * as THREE from "three";
 	//@ts-ignore
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-	import { CubeCamera, Loader, PerspectiveCamera } from "three";
+	import { CubeCamera, Loader, Mesh, PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
 	let canvas: HTMLCanvasElement;
@@ -124,9 +124,47 @@
 			(room) => {
 				for (let i = 0; i < room.scene.children.length; i++) {
 					if (room.scene.children[i].name == "Floor") {
-						floor = room.scene.children[i];
-						floor.scale.setX(width);
-						floor.scale.setZ(height);
+						let floorTemp = room.scene.children[i];
+						floor = new Mesh(
+							new THREE.BoxGeometry(width, 0, height),
+							new THREE.MeshBasicMaterial({
+								color: new THREE.Color(0x000000),
+							})
+						);
+						let NWall = new Mesh(
+							new THREE.BoxGeometry(6, 0.05, height),
+							new THREE.MeshBasicMaterial({
+								color: new THREE.Color(0x000000),
+							})
+						);
+						NWall.position.x = width;
+						let SWall = new Mesh(
+							new THREE.BoxGeometry(6, 0.05, height),
+							new THREE.MeshBasicMaterial({
+								color: new THREE.Color(0x000000),
+							})
+						);
+						SWall.position.x = -width;
+						let EWall = new Mesh(
+							new THREE.BoxGeometry(6, 0.05, width),
+							new THREE.MeshBasicMaterial({
+								color: new THREE.Color(0x000000),
+							})
+						);
+						EWall.position.z = height;
+						let WWall = new Mesh(
+							new THREE.BoxGeometry(6, 0.05, width),
+							new THREE.MeshBasicMaterial({
+								color: new THREE.Color(0x000000),
+							})
+						);
+						WWall.position.z = -height;
+						floor.position.set(floorTemp.position.x, floorTemp.position.y, floorTemp.position.z);
+						scene.add(floor)
+						scene.add(NWall)
+						scene.add(SWall)
+						scene.add(EWall)
+						scene.add(WWall)
 						floorCorners = [
 							new THREE.Vector3(
 								floor.position.x + floor.scale.x - 0.2,
