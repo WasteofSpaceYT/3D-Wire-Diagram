@@ -72,9 +72,6 @@
 				if(point.x > floor.scale.x){
 					point.x = floor.scale.x;
 				}
-				if(point.y > floor.scale.y){
-					point.y = floor.scale.y;
-				}
 				if(point.z > floor.scale.z){
 					point.z = floor.scale.z;
 				}
