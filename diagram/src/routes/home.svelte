@@ -8,7 +8,7 @@ import { onMount } from "svelte";
         room.style.height = `${height*30}px`;
     })
 </script>
-<div style="margin:20px">
+<div class="inline-block align-middle">
     Width: <input type="number" bind:value={width} on:change={() => {
         document.getElementById("room").style.width = `${width*30}px`;
     }} />ft
