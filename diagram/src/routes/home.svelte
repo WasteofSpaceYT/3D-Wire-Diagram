@@ -1,8 +1,8 @@
 <script lang="ts">
 import { onMount } from "svelte";
     let width = 10;
-    let height = 5;
-    let length = 9;
+    let height = 9;
+    let length = 5;
     onMount(() => {
         let room = document.getElementById("room");
         room.style.width = `${width*30}px`;
