@@ -9,11 +9,27 @@
 	import { CubeCamera, Loader, Mesh, PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
+	import { initializeApp } from "firebase/app";
+	import { getAuth } from "firebase/auth";
+
+	// Initialize firebase
+	const firebaseConfig = {
+        apiKey: "AIzaSyA3w93rWAwPFTHpnuGgmnWEFhsiwJkRpGY",
+        authDomain: "wiringdiagram3d.firebaseapp.com",
+        projectId: "wiringdiagram3d",
+        storageBucket: "wiringdiagram3d.appspot.com",
+        messagingSenderId: "322663865877",
+        appId: "1:322663865877:web:eb33bb9fe16a291137781c",
+        measurementId: "G-P1PXBXCXHF",
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
 
 	// Variables
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
+	let userToggled = false;
 	let width;
 	let height;
 	let length;
@@ -254,7 +270,26 @@
 
 <div>
 	<div style="position: absolute">
-		<img src="/favicon.png" alt="" style="float: right">
+		<img src="/favicon.png" alt="" on:click={() => {
+			userToggled = !userToggled;
+		}}>
+		<div style="float: right">
+		<br />
+		<div hidden={!userToggled}>
+			<div hidden={auth.currentUser != undefined}>
+			<h1>{auth.currentUser != null ? auth.currentUser.displayName : ""}</h1>
+			<button>New Project</button>
+			<button>Save Project</button>
+			<button>Load Project</button>
+			<button>View Projects</button>
+			<button>Logout</button>
+			</div>
+			<div hidden={!(auth.currentUser != undefined)}>
+				<button>Login</button>
+				<button>Signup</button>
+				</div>
+		</div>
+		</div>
 		<div>
 		<button on:click={() => {
 			navShow = "receptacles"
