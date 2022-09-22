@@ -2,6 +2,7 @@
 import { onMount } from "svelte";
     let width = 10;
     let height = 5;
+    let length = 9;
     onMount(() => {
         let room = document.getElementById("room");
         room.style.width = `${width*30}px`;
@@ -13,10 +14,12 @@ import { onMount } from "svelte";
         document.getElementById("room").style.width = `${width*30}px`;
     }} />ft
     <br />
+    Length: <input type="number" bind:value={length} />ft
+    <br />
     Height: <input type="number" bind:value={height} on:change={() => {
         document.getElementById("room").style.height = `${height*30}px`;
     }} />ft
     <div id="room" style="border: 1px solid black; margin: 25px">
     </div>
-    <a href={`/diagram?width=${width}&height=${height}`}><button>Get to Wirin'</button></a>
+    <a href={`/diagram?width=${width}&length=${length}&height=${height}`}><button>Get to Wirin'</button></a>
 </div>

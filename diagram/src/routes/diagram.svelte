@@ -16,10 +16,13 @@
 	let renderer: THREE.WebGLRenderer;
 	let width;
 	let height;
+	let length;
 	let placing = false;
 	let cube;
 	let floorCorners;
 	let wallHeight = 9
+	let showing = "Floor";
+	let navShow = "Receptacles";
 	let floor;
 	let NWall;
 	let SWall;
@@ -37,28 +40,34 @@
 	let url = location.href;
 	try {
 		let params = url.split("?")[1].split("&");
-		if (params.length != 2) {
+		if (params.length != 3) {
 			alert("Invalid arguments");
 		}
 		if (
 			params[0].split("=")[0] != "width" ||
-			params[1].split("=")[0] != "height"
+			params[1].split("=")[0] != "length" ||
+			params[2].split("=")[0] != "height"
 		) {
 			alert("Invalid arguments");
 		}
 		if (
 			params[0].split("=")[0] != "width" ||
-			(params[1].split("=")[0] != "height" && params.length == 2)
+			params[1].split("=")[0] != "length" ||
+			params[2].split("=")[0] != "height" && 
+			params.length == 3
 		) {
 			width = 5;
-			height = 5;
+			length = 10;
+			height = 9;
 		} else {
 			width = parseInt(params[0].split("=")[1]);
-			height = parseInt(params[1].split("=")[1]);
+			length = parseInt(params[1].split("=")[1]);
+			height = parseInt(params[2].split("=")[1]);
 		}
 	} catch (err) {
 		width = 5;
-		height = 5;
+		length = 10;
+		height = 9;
 	}
 
 	// Empty wall array
@@ -138,39 +147,39 @@
 
 						// Create floor and walls
 						floor = new Mesh(
-							new THREE.BoxGeometry(width, 0.05, height),
+							new THREE.BoxGeometry(width, 0.05, length),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x808080),
 							})
 						);
 						NWall = new Mesh(
-							new THREE.BoxGeometry(9, 0.05, height),
+							new THREE.BoxGeometry(height, 0.05, length),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						NWall.position.x = width/2;
 						SWall = new Mesh(
-							new THREE.BoxGeometry(9, 0.05, height),
+							new THREE.BoxGeometry(height, 0.05, length),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
 						SWall.position.x = -width/2;
 						EWall = new Mesh(
-							new THREE.BoxGeometry(9, 0.05, width),
+							new THREE.BoxGeometry(height, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
-						EWall.position.z = height/2;
+						EWall.position.z = length/2;
 						WWall = new Mesh(
-							new THREE.BoxGeometry(9, 0.05, width),
+							new THREE.BoxGeometry(height, 0.05, width),
 							new THREE.MeshBasicMaterial({
 								color: new THREE.Color(0x000000),
 							})
 						);
-						WWall.position.z = -height/2;
+						WWall.position.z = -length/2;
 						
 						// Set the floor corners for wall hiding
 						floorCorners = [
@@ -208,10 +217,10 @@
 				EWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
 				WWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
 				// Position
-				NWall.position.y = wallHeight/2;
-				SWall.position.y = wallHeight/2;
-				EWall.position.y = wallHeight/2;
-				WWall.position.y = wallHeight/2;
+				NWall.position.y = height/2;
+				SWall.position.y = height/2;
+				EWall.position.y = height/2;
+				WWall.position.y = height/2;
 
 				walls = [NWall, SWall, EWall, WWall];
 
@@ -244,27 +253,36 @@
 </script>
 
 <div>
-	<div class="scroll">
-		<button on:click={addCube}>Add Duplex</button>
-		<button>Add Quad</button>
-		<button>Add Duplex (Decora)</button>
-		<button>Add Quad (Decora)</button>
-		<button>Add Switch</button>
-		<button>Add Switch (Decora)</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
-		<button>Add Receptacle</button>
+	<div>
+		<button on:click={() => {
+			navShow = "receptacles"
+		}}>Receptacles</button>
+		<button on:click={() => {
+			navShow = "switches"
+		}}>Switches</button>
+		<button on:click={() => {
+			navShow = "lights"
+		}}>Lights</button>
+	</div>
+	<div hidden={navShow != "receptacles" ? true : false}>
+		<button on:click={addCube}>Duplex</button>
+		<button on:click={addCube}>Quad</button>
+		<button on:click={addCube}>Duplex (Decora)</button>
+		<button on:click={addCube}>Quad (Decora)</button>
+	</div>
+	<div hidden={navShow != "switches" ? true : false}>
+		<button on:click={addCube}>Single</button>
+		<button on:click={addCube}>Double</button>
+		<button on:click={addCube}>Single (Decora)</button>
+		<button on:click={addCube}>Double (Decora)</button>
 	</div>
 	<form>
-		<input type="radio" name="options" id="1">Floor
-		<input type="radio" name="options" id="2">Ceiling
+		<input type="radio" name="options" checked id="1" on:click={() => {
+			showing = "Floor";
+		}}>Floor
+		<input type="radio" name="options" id="2" on:click={() => {
+			showing = "Ceiling";
+		}}>Ceiling
 	</form>
 	<canvas bind:this={canvas} style="w-full h-full" />
 </div>
