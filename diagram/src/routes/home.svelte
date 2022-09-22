@@ -17,7 +17,7 @@ import { onMount } from "svelte";
     Length: <input type="number" bind:value={length} />ft
     <br />
     Height: <input type="number" bind:value={height} on:change={() => {
-        document.getElementById("room").style.height = `${height*30}px`;
+        document.getElementById("room").style.height = `${length*30}px`;
     }} />ft
     <div id="room" style="border: 1px solid black; margin: 25px">
     </div>
