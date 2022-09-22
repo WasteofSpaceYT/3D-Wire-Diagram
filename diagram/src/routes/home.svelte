@@ -6,7 +6,7 @@ import { onMount } from "svelte";
     onMount(() => {
         let room = document.getElementById("room");
         room.style.width = `${width*30}px`;
-        room.style.height = `${height*30}px`;
+        room.style.height = `${length*30}px`;
     })
 </script>
 <div style="margin: 20px">
