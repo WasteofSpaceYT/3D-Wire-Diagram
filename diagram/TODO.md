@@ -9,7 +9,7 @@
 * Save JSON of scene to firestore
 * Load saves with property on the Diagram component
 * Profile button over canvas with transparent background
-* Rotate scene without playing device
+* Rotate scene without placing device
 * Nodes on devices for wiring
 * Click device to zoom for wiring
 * Make lights actual lights togglable by switches
