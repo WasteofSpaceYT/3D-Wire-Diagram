@@ -14,11 +14,11 @@ import { onMount } from "svelte";
         document.getElementById("room").style.width = `${width*30}px`;
     }} />ft
     <br />
-    Length: <input type="number" bind:value={length} />ft
-    <br />
-    Height: <input type="number" bind:value={height} on:change={() => {
+    Length: <input type="number" bind:value={length} on:change={() => {
         document.getElementById("room").style.height = `${length*30}px`;
     }} />ft
+    <br />
+    Height: <input type="number" bind:value={height} />ft
     <div id="room" style="border: 1px solid black; margin: 25px">
     </div>
     <a href={`/diagram?width=${width}&length=${length}&height=${height}`}><button>Get to Wirin'</button></a>
