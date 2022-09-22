@@ -233,7 +233,7 @@
 
 		// Set camera position and rotation, then add to scene
 		camera.position.z = 10;
-		camera.position.y = 5;
+		camera.position.y = 15;
 		camera.rotation.z = new THREE.Euler(0,0,Math.PI/4).z;
 		scene.add(camera);
 
@@ -242,7 +242,7 @@
 		controls.enablePan = false;
 
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		
+	2
 		// Add lights
 		var light = new THREE.AmbientLight(0xffffff, 10);
 		light.castShadow = true;
@@ -253,7 +253,9 @@
 </script>
 
 <div>
-	<div>
+	<div style="position: absolute">
+		<img src="/favicon.png" alt="" style="float: right">
+		<div>
 		<button on:click={() => {
 			navShow = "receptacles"
 		}}>Receptacles</button>
@@ -284,6 +286,7 @@
 			showing = "Ceiling";
 		}}>Ceiling
 	</form>
+	</div>
 	<canvas bind:this={canvas} style="w-full h-full" />
 </div>
 <svelte:window

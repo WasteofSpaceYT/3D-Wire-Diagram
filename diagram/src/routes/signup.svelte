@@ -2,6 +2,7 @@
     import { initializeApp } from "@firebase/app";
     import { getAuth, createUserWithEmailAndPassword } from "@firebase/auth";
 
+    // Initialize Firebase for authentication
     const firebaseConfig = {
         apiKey: "AIzaSyA3w93rWAwPFTHpnuGgmnWEFhsiwJkRpGY",
         authDomain: "wiringdiagram3d.firebaseapp.com",
@@ -13,6 +14,8 @@
     };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
+
+    // Signup logig
     const signup = (e) => {
         const formdata = new FormData(e.target);
         let username = formdata.get("email");
