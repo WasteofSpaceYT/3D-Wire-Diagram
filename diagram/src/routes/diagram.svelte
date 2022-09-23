@@ -14,16 +14,16 @@
 
 	// Initialize firebase
 	const firebaseConfig = {
-        apiKey: "AIzaSyA3w93rWAwPFTHpnuGgmnWEFhsiwJkRpGY",
-        authDomain: "wiringdiagram3d.firebaseapp.com",
-        projectId: "wiringdiagram3d",
-        storageBucket: "wiringdiagram3d.appspot.com",
-        messagingSenderId: "322663865877",
-        appId: "1:322663865877:web:eb33bb9fe16a291137781c",
-        measurementId: "G-P1PXBXCXHF",
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+		apiKey: "AIzaSyA3w93rWAwPFTHpnuGgmnWEFhsiwJkRpGY",
+		authDomain: "wiringdiagram3d.firebaseapp.com",
+		projectId: "wiringdiagram3d",
+		storageBucket: "wiringdiagram3d.appspot.com",
+		messagingSenderId: "322663865877",
+		appId: "1:322663865877:web:eb33bb9fe16a291137781c",
+		measurementId: "G-P1PXBXCXHF",
+	};
+	const app = initializeApp(firebaseConfig);
+	const auth = getAuth();
 
 	// Variables
 	let canvas: HTMLCanvasElement;
@@ -36,7 +36,7 @@
 	let placing = false;
 	let cube;
 	let floorCorners;
-	let wallHeight = 9
+	let wallHeight = 9;
 	let showing = "Floor";
 	let navShow = "Receptacles";
 	let floor;
@@ -44,8 +44,8 @@
 	let SWall;
 	let EWall;
 	let WWall;
-	let NSRot = new THREE.Euler(0, 0, Math.PI/2)
-	let EWRot = new THREE.Euler(Math.PI/2, Math.PI/2, 0)
+	let NSRot = new THREE.Euler(0, 0, Math.PI / 2);
+	let EWRot = new THREE.Euler(Math.PI / 2, Math.PI / 2, 0);
 
 	// Raycasters for object placement and wall hiding
 	const raycaster = new THREE.Raycaster();
@@ -69,8 +69,7 @@
 		if (
 			params[0].split("=")[0] != "width" ||
 			params[1].split("=")[0] != "length" ||
-			params[2].split("=")[0] != "height" && 
-			params.length == 3
+			(params[2].split("=")[0] != "height" && params.length == 3)
 		) {
 			width = 5;
 			length = 10;
@@ -161,96 +160,96 @@
 			alpha: true,
 		});
 
-						// Create floor and walls
-						floor = new Mesh(
-							new THREE.BoxGeometry(width, 0.05, length),
-							new THREE.MeshBasicMaterial({
-								color: new THREE.Color(0x808080),
-							})
-						);
-						NWall = new Mesh(
-							new THREE.BoxGeometry(height, 0.05, length),
-							new THREE.MeshBasicMaterial({
-								color: new THREE.Color(0x000000),
-							})
-						);
-						NWall.position.x = width/2;
-						SWall = new Mesh(
-							new THREE.BoxGeometry(height, 0.05, length),
-							new THREE.MeshBasicMaterial({
-								color: new THREE.Color(0x000000),
-							})
-						);
-						SWall.position.x = -width/2;
-						EWall = new Mesh(
-							new THREE.BoxGeometry(height, 0.05, width),
-							new THREE.MeshBasicMaterial({
-								color: new THREE.Color(0x000000),
-							})
-						);
-						EWall.position.z = length/2;
-						WWall = new Mesh(
-							new THREE.BoxGeometry(height, 0.05, width),
-							new THREE.MeshBasicMaterial({
-								color: new THREE.Color(0x000000),
-							})
-						);
-						WWall.position.z = -length/2;
-						
-						// Set the floor corners for wall hiding
-						floorCorners = [
-							new THREE.Vector3(
-								floor.position.x + (floor.scale.x*2),
-								floor.position.y * 2,
-								floor.position.z + (floor.scale.z*2)
-							),
-							new THREE.Vector3(
-								floor.position.x + (floor.scale.x*2),
-								floor.position.y * 2,
-								floor.position.z - (floor.scale.z*2)
-							),
-							new THREE.Vector3(
-								floor.position.x - (floor.scale.x*2),
-								floor.position.y * 2,
-								floor.position.z - (floor.scale.z*2)
-							),
-							new THREE.Vector3(
-								floor.position.x - (floor.scale.x*2),
-								floor.position.y * 2,
-								floor.position.z + (floor.scale.z*2)
-							),
-						];
-						renderer.setAnimationLoop(render);
-				// Set object names
-				floor.name = "Floor";
-				NWall.name = "NWall";
-				SWall.name = "SWall";
-				EWall.name = "EWall";
-				WWall.name = "WWall";
-				// Rotation
-				NWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
-				SWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
-				EWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
-				WWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
-				// Position
-				NWall.position.y = height/2;
-				SWall.position.y = height/2;
-				EWall.position.y = height/2;
-				WWall.position.y = height/2;
+		// Create floor and walls
+		floor = new Mesh(
+			new THREE.BoxGeometry(width, 0.05, length),
+			new THREE.MeshBasicMaterial({
+				color: new THREE.Color(0x808080),
+			})
+		);
+		NWall = new Mesh(
+			new THREE.BoxGeometry(height, 0.05, length),
+			new THREE.MeshBasicMaterial({
+				color: new THREE.Color(0x000000),
+			})
+		);
+		NWall.position.x = width / 2;
+		SWall = new Mesh(
+			new THREE.BoxGeometry(height, 0.05, length),
+			new THREE.MeshBasicMaterial({
+				color: new THREE.Color(0x000000),
+			})
+		);
+		SWall.position.x = -width / 2;
+		EWall = new Mesh(
+			new THREE.BoxGeometry(height, 0.05, width),
+			new THREE.MeshBasicMaterial({
+				color: new THREE.Color(0x000000),
+			})
+		);
+		EWall.position.z = length / 2;
+		WWall = new Mesh(
+			new THREE.BoxGeometry(height, 0.05, width),
+			new THREE.MeshBasicMaterial({
+				color: new THREE.Color(0x000000),
+			})
+		);
+		WWall.position.z = -length / 2;
 
-				walls = [NWall, SWall, EWall, WWall];
+		// Set the floor corners for wall hiding
+		floorCorners = [
+			new THREE.Vector3(
+				floor.position.x + floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z + floor.scale.z * 2
+			),
+			new THREE.Vector3(
+				floor.position.x + floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z - floor.scale.z * 2
+			),
+			new THREE.Vector3(
+				floor.position.x - floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z - floor.scale.z * 2
+			),
+			new THREE.Vector3(
+				floor.position.x - floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z + floor.scale.z * 2
+			),
+		];
+		renderer.setAnimationLoop(render);
+		// Set object names
+		floor.name = "Floor";
+		NWall.name = "NWall";
+		SWall.name = "SWall";
+		EWall.name = "EWall";
+		WWall.name = "WWall";
+		// Rotation
+		NWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
+		SWall.rotation.set(NSRot.x, NSRot.y, NSRot.z);
+		EWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
+		WWall.rotation.set(EWRot.x, EWRot.y, EWRot.z);
+		// Position
+		NWall.position.y = height / 2;
+		SWall.position.y = height / 2;
+		EWall.position.y = height / 2;
+		WWall.position.y = height / 2;
 
-				// Add objects to scene
-				scene.add(floor);
-				scene.add(NWall);
-				scene.add(SWall);
-				scene.add(EWall);
-				scene.add(WWall);
+		walls = [NWall, SWall, EWall, WWall];
+
+		// Add objects to scene
+		scene.add(floor);
+		scene.add(NWall);
+		scene.add(SWall);
+		scene.add(EWall);
+		scene.add(WWall);
 
 		// Set camera position and rotation, then add to scene
 		camera.position.z = 10;
 		camera.position.y = 15;
-		camera.rotation.z = new THREE.Euler(0,0,Math.PI/4).z;
+		camera.rotation.z = new THREE.Euler(0, 0, Math.PI / 4).z;
 		scene.add(camera);
 
 		// Add camera controls
@@ -258,7 +257,7 @@
 		controls.enablePan = false;
 
 		renderer.setSize(window.innerWidth, window.innerHeight);
-	2
+
 		// Add lights
 		var light = new THREE.AmbientLight(0xffffff, 10);
 		light.castShadow = true;
@@ -270,57 +269,82 @@
 
 <div>
 	<div style="position: absolute">
-		<img src="/favicon.png" alt="" on:click={() => {
-			userToggled = !userToggled;
-		}}>
+		<img
+			src="/favicon.png"
+			alt=""
+			on:click={() => {
+				userToggled = !userToggled;
+			}}
+		/>
 		<div style="float: right">
-		<br />
-		<div hidden={!userToggled}>
-			<div hidden={auth.currentUser != undefined}>
-			<h1>{auth.currentUser != null ? auth.currentUser.displayName : ""}</h1>
-			<button>New Project</button>
-			<button>Save Project</button>
-			<button>Load Project</button>
-			<button>View Projects</button>
-			<button>Logout</button>
-			</div>
-			<div hidden={!(auth.currentUser != undefined)}>
-				<button>Login</button>
-				<button>Signup</button>
+			<br />
+			<div hidden={!userToggled}>
+				<div hidden={auth.currentUser == null}>
+					<h1>
+						{auth.currentUser != null
+							? auth.currentUser.displayName
+							: ""}
+					</h1>
+					<button class="navButton">New Project</button>
+					<button class="navButton">Save Project</button>
+					<button class="navButton">Load Project</button>
+					<button class="navButton">View Projects</button>
+					<button class="navButton">Logout</button>
 				</div>
-		</div>
+				<div hidden={!(auth.currentUser == undefined)}>
+					<button class="navButton" href="/login">Login</button>
+					<button class="navButton" href="/signup">Signup</button>
+				</div>
+			</div>
 		</div>
 		<div>
-		<button on:click={() => {
-			navShow = "receptacles"
-		}}>Receptacles</button>
-		<button on:click={() => {
-			navShow = "switches"
-		}}>Switches</button>
-		<button on:click={() => {
-			navShow = "lights"
-		}}>Lights</button>
-	</div>
-	<div hidden={navShow != "receptacles" ? true : false}>
-		<button on:click={addCube}>Duplex</button>
-		<button on:click={addCube}>Quad</button>
-		<button on:click={addCube}>Duplex (Decora)</button>
-		<button on:click={addCube}>Quad (Decora)</button>
-	</div>
-	<div hidden={navShow != "switches" ? true : false}>
-		<button on:click={addCube}>Single</button>
-		<button on:click={addCube}>Double</button>
-		<button on:click={addCube}>Single (Decora)</button>
-		<button on:click={addCube}>Double (Decora)</button>
-	</div>
-	<form>
-		<input type="radio" name="options" checked id="1" on:click={() => {
-			showing = "Floor";
-		}}>Floor
-		<input type="radio" name="options" id="2" on:click={() => {
-			showing = "Ceiling";
-		}}>Ceiling
-	</form>
+			<button
+				on:click={() => {
+					navShow = "receptacles";
+				}}>Receptacles</button
+			>
+			<button
+				on:click={() => {
+					navShow = "switches";
+				}}>Switches</button
+			>
+			<button
+				on:click={() => {
+					navShow = "lights";
+				}}>Lights</button
+			>
+		</div>
+		<div hidden={navShow != "receptacles" ? true : false}>
+			<button on:click={addCube}>Duplex</button>
+			<button on:click={addCube}>Quad</button>
+			<button on:click={addCube}>Duplex (Decora)</button>
+			<button on:click={addCube}>Quad (Decora)</button>
+		</div>
+		<div hidden={navShow != "switches" ? true : false}>
+			<button on:click={addCube}>Single</button>
+			<button on:click={addCube}>Double</button>
+			<button on:click={addCube}>Single (Decora)</button>
+			<button on:click={addCube}>Double (Decora)</button>
+		</div>
+		<form>
+			<input
+				type="radio"
+				name="options"
+				checked
+				id="1"
+				on:click={() => {
+					showing = "Floor";
+				}}
+			/>Floor
+			<input
+				type="radio"
+				name="options"
+				id="2"
+				on:click={() => {
+					showing = "Ceiling";
+				}}
+			/>Ceiling
+		</form>
 	</div>
 	<canvas bind:this={canvas} style="w-full h-full" />
 </div>
