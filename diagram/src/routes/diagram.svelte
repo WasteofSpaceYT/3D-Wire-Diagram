@@ -202,12 +202,11 @@
 	onMount(() => {
 		let floormat: THREE.MeshBasicMaterial;
 		let loader = new THREE.TextureLoader();
-		loader.load("/floor.jpg", texture => {
+		let texture = loader.load("/floor.jpg")
 			floormat = new THREE.MeshBasicMaterial({
     map: texture,
-	color: new THREE.Color(0x00ff00)
   });
-		})
+  console.log("done")
 		// Create renderer
 		renderer = new THREE.WebGLRenderer({
 			canvas: canvas,
@@ -275,6 +274,7 @@
 		renderer.setAnimationLoop(render);
 		// Set object names
 		floor.name = "Floor";
+		console.log("gay")
 		NWall.name = "NWall";
 		SWall.name = "SWall";
 		EWall.name = "EWall";
