@@ -50,6 +50,7 @@
 	let EWallBB: THREE.Box3;
 	let WWallBB: THREE.Box3;
 	let placingBB: THREE.Box3;
+	let floorBB: THREE.Box3;
 	let NSRot: THREE.Euler = new THREE.Euler(0, 0, Math.PI / 2);
 	let EWRot: THREE.Euler = new THREE.Euler(Math.PI / 2, Math.PI / 2, 0);
 
@@ -124,7 +125,26 @@
 					let point = intersections[i].point;
 					let lastPoint = cube.position;
 					cube.position.set(point.x, point.y + 1, point.z);
-					for (let wall of walls) {
+					if (NWallBB.intersectsBox(placingBB)) {
+						placingWall = NWall;
+						console.log("Here");
+					}
+					if (SWallBB.intersectsBox(placingBB)) {
+						placingWall = SWall;
+						console.log("Here");
+					}
+					if (EWallBB.intersectsBox(placingBB)) {
+						placingWall = EWall;
+						console.log("Here");
+					}
+					if (WWallBB.intersectsBox(placingBB)) {
+						placingWall = WWall;
+						console.log("Here");
+					}
+					if(floorBB.intersectsBox(placingBB)){
+						break
+					}
+					/*for (let wall of walls) {
 						switch (wall.name) {
 							case "NWall":
 								if (NWallBB.intersectsBox(placingBB)) {
@@ -151,7 +171,7 @@
 								}
 								break;
 						}
-					}
+					}*/
 					if (!placingWall) {
 						cube.position.set(
 							lastPoint.x,
@@ -190,23 +210,69 @@
 		renderer.render(scene, camera);
 	}
 	// Add receptacle to scene
-	const addCube = () => {
+	const addCube = (device: "receptacleduplex" | "switch" | "switchduplex" | "receptaclequad", decora: boolean) => {
+		const loader = new THREE.TextureLoader();
+		let texture: THREE.Texture;
+		switch(device){
+			case("receptacleduplex"):
+		texture = loader.load(decora ? "duplexDecora.jpg" : "duplex.jpg");
 		cube = new THREE.Mesh(
 			new THREE.BoxGeometry(2.75 / 12, 4.5 / 12, 0.25 / 12),
-			new THREE.MeshBasicMaterial({ color: new THREE.Color() })
+			new THREE.MeshBasicMaterial({
+				map: texture,
+			})
 		);
 		placing = true;
 		placingBB = new Box3().setFromObject(cube);
 		scene.add(cube);
+		break;
+		case("receptaclequad"):
+		texture = loader.load(decora ? "receptacleQuadDecora.jpg" : "receptacleQuad.jpg");
+		cube = new THREE.Mesh(
+			new THREE.BoxGeometry(4.5 / 12, 4.5 / 12, 0.25 / 12),
+			new THREE.MeshBasicMaterial({
+				map: texture,
+			})
+		);
+		placing = true;
+		placingBB = new Box3().setFromObject(cube);
+		scene.add(cube);
+		break;
+		case("switch"):
+		texture = loader.load(decora ? "switchDecora.jpg" : "switch.jpg");
+		cube = new THREE.Mesh(
+			new THREE.BoxGeometry(2.75 / 12, 4.5 / 12, 0.25 / 12),
+			new THREE.MeshBasicMaterial({
+				map: texture,
+			})
+		);
+		placing = true;
+		placingBB = new Box3().setFromObject(cube);
+		scene.add(cube);
+		break;
+		case("switchduplex"):
+		texture = loader.load(decora ? "switchDuplexDecora.jpg" : "switchDuplex.jpg");
+		cube = new THREE.Mesh(
+			new THREE.BoxGeometry(4.5 / 12, 4.5 / 12, 0.25 / 12),
+			new THREE.MeshBasicMaterial({
+				map: texture,
+			})
+		);
+		placing = true;
+		placingBB = new Box3().setFromObject(cube);
+		scene.add(cube);
+		break;
+		}
 	};
 	onMount(() => {
+		// Load texture for floor
 		let floormat: THREE.MeshBasicMaterial;
 		let loader = new THREE.TextureLoader();
-		let texture = loader.load("/floor.jpg")
-			floormat = new THREE.MeshBasicMaterial({
-    map: texture,
-  });
-  console.log("done")
+		let texture = loader.load("/floor.jpg");
+		floormat = new THREE.MeshBasicMaterial({
+			map: texture,
+		});
+		console.log("done");
 		// Create renderer
 		renderer = new THREE.WebGLRenderer({
 			canvas: canvas,
@@ -215,35 +281,32 @@
 		});
 
 		// Create floor and walls
-		floor = new Mesh(
-			new THREE.BoxGeometry(width, 0.05, length),
-			floormat
-		);
+		floor = new Mesh(new THREE.BoxGeometry(width, 0.05, length), floormat);
 		NWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x000000),
+				color: new THREE.Color(0x808080),
 			})
 		);
 		NWall.position.x = width / 2;
 		SWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x000000),
+				color: new THREE.Color(0x808080),
 			})
 		);
 		SWall.position.x = -width / 2;
 		EWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, width),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x000000),
+				color: new THREE.Color(0x808080),
 			})
 		);
 		EWall.position.z = length / 2;
 		WWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, width),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x000000),
+				color: new THREE.Color(0x808080),
 			})
 		);
 		WWall.position.z = -length / 2;
@@ -274,7 +337,7 @@
 		renderer.setAnimationLoop(render);
 		// Set object names
 		floor.name = "Floor";
-		console.log("gay")
+		console.log("gay");
 		NWall.name = "NWall";
 		SWall.name = "SWall";
 		EWall.name = "EWall";
@@ -304,6 +367,16 @@
 		scene.add(SWall);
 		scene.add(EWall);
 		scene.add(WWall);
+
+		// Create collision box for floor
+		floorBB = new THREE.Box3().setFromCenterAndSize(
+			new THREE.Vector3(0, -floor.scale.y, 0),
+			new THREE.Vector3(
+				floor.scale.x * 2,
+				floor.scale.y * 2,
+				floor.scale.z * 2
+			)
+		);
 
 		// Set camera position and rotation, then add to scene
 		camera.position.z = 10;
@@ -374,16 +447,16 @@
 			>
 		</div>
 		<div hidden={navShow != "receptacles" ? true : false}>
-			<button on:click={addCube}>Duplex</button>
-			<button on:click={addCube}>Quad</button>
-			<button on:click={addCube}>Duplex (Decora)</button>
-			<button on:click={addCube}>Quad (Decora)</button>
+			<button on:click={() => {addCube("receptacleduplex", false)}}>Duplex</button>
+			<button on:click={() => {addCube("receptaclequad", false)}}>Quad</button>
+			<button on:click={() => {addCube("receptacleduplex", true)}}>Duplex (Decora)</button>
+			<button on:click={() => {addCube("receptaclequad", true)}}>Quad (Decora)</button>
 		</div>
 		<div hidden={navShow != "switches" ? true : false}>
-			<button on:click={addCube}>Single</button>
-			<button on:click={addCube}>Double</button>
-			<button on:click={addCube}>Single (Decora)</button>
-			<button on:click={addCube}>Double (Decora)</button>
+			<button on:click={() => {addCube("switch", false)}}>Single</button>
+			<button on:click={() => {addCube("switchduplex", false)}}>Double</button>
+			<button on:click={() => {addCube("switch", true)}}>Single (Decora)</button>
+			<button on:click={() => {addCube("switchduplex", true)}}>Double (Decora)</button>
 		</div>
 		<form>
 			<input

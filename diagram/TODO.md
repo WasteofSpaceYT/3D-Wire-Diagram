@@ -19,3 +19,4 @@
 * Change to button group instead of individual buttons
 * User profiles for scene saving
 * Profile button over canvas with transparent background
+* Textured floor
