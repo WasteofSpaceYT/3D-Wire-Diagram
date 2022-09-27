@@ -6,7 +6,7 @@
 	import * as THREE from "three";
 	//@ts-ignore
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-	import { CubeCamera, Loader, Mesh, PerspectiveCamera } from "three";
+	import { Box3, CubeCamera, Loader, Mesh, PerspectiveCamera } from "three";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { onMount } from "svelte";
 	import { initializeApp } from "firebase/app";
@@ -30,22 +30,28 @@
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
 	let userToggled = false;
-	let width;
-	let height;
-	let length;
-	let placing = false;
-	let cube;
-	let floorCorners;
+	let width: number;
+	let height: number;
+	let length: number;
+	let placing: boolean = false;
+	let cube: THREE.Mesh;
+	let floorCorners: THREE.Vector3[];
 	let wallHeight = 9;
-	let showing = "Floor";
-	let navShow = "Receptacles";
-	let floor;
-	let NWall;
-	let SWall;
-	let EWall;
-	let WWall;
-	let NSRot = new THREE.Euler(0, 0, Math.PI / 2);
-	let EWRot = new THREE.Euler(Math.PI / 2, Math.PI / 2, 0);
+	let showing: "Floor" | "Ceiling" = "Floor";
+	let navShow: "receptacles" | "switches" | "lights" = "receptacles";
+	let floor: Mesh;
+	let NWall: Mesh;
+	let SWall: Mesh;
+	let EWall: Mesh;
+	let WWall: Mesh;
+	let placingWall: Mesh;
+	let NWallBB: THREE.Box3;
+	let SWallBB: THREE.Box3;
+	let EWallBB: THREE.Box3;
+	let WWallBB: THREE.Box3;
+	let placingBB: THREE.Box3;
+	let NSRot: THREE.Euler = new THREE.Euler(0, 0, Math.PI / 2);
+	let EWRot: THREE.Euler = new THREE.Euler(Math.PI / 2, Math.PI / 2, 0);
 
 	// Raycasters for object placement and wall hiding
 	const raycaster = new THREE.Raycaster();
@@ -113,16 +119,56 @@
 			);
 
 			for (let i = 0; i < intersections.length; i++) {
+				console.log(placingWall);
 				if (intersections != undefined) {
 					let point = intersections[i].point;
+					let lastPoint = cube.position;
 					cube.position.set(point.x, point.y + 1, point.z);
-					cube.rotation.set(
-						intersections[i].object.rotation.x,
-						intersections[i].object.rotation.y,
-						intersections[i].object.rotation.z
-					);
+					for (let wall of walls) {
+						switch (wall.name) {
+							case "NWall":
+								if (NWallBB.intersectsBox(placingBB)) {
+									placingWall = NWall;
+									console.log("Here");
+								}
+								break;
+							case "SWall":
+								if (SWallBB.intersectsBox(placingBB)) {
+									placingWall = SWall;
+									console.log("Here");
+								}
+								break;
+							case "EWall":
+								if (EWallBB.intersectsBox(placingBB)) {
+									placingWall = EWall;
+									console.log("Here");
+								}
+								break;
+							case "WWall":
+								if (WWallBB.intersectsBox(placingBB)) {
+									placingWall = WWall;
+									console.log("Here");
+								}
+								break;
+						}
+					}
+					if (!placingWall) {
+						cube.position.set(
+							lastPoint.x,
+							lastPoint.y,
+							lastPoint.z
+						);
+					}
 				}
 			}
+			if (placingWall) {
+				cube.rotation.set(
+					placingWall.rotation.x,
+					placingWall.rotation.y,
+					placingWall.rotation.z
+				);
+			}
+			placingWall = undefined;
 		}
 		// Wall hiding raycasting
 		for (const wall of walls) {
@@ -150,9 +196,18 @@
 			new THREE.MeshBasicMaterial({ color: new THREE.Color() })
 		);
 		placing = true;
+		placingBB = new Box3().setFromObject(cube);
 		scene.add(cube);
 	};
 	onMount(() => {
+		let floormat: THREE.MeshBasicMaterial;
+		let loader = new THREE.TextureLoader();
+		loader.load("/floor.jpg", texture => {
+			floormat = new THREE.MeshBasicMaterial({
+    map: texture,
+	color: new THREE.Color(0x00ff00)
+  });
+		})
 		// Create renderer
 		renderer = new THREE.WebGLRenderer({
 			canvas: canvas,
@@ -163,9 +218,7 @@
 		// Create floor and walls
 		floor = new Mesh(
 			new THREE.BoxGeometry(width, 0.05, length),
-			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x808080),
-			})
+			floormat
 		);
 		NWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
@@ -239,6 +292,12 @@
 
 		walls = [NWall, SWall, EWall, WWall];
 
+		// Add bounding boxes for placing collision
+		NWallBB = new THREE.Box3().setFromObject(NWall);
+		SWallBB = new THREE.Box3().setFromObject(SWall);
+		EWallBB = new THREE.Box3().setFromObject(EWall);
+		WWallBB = new THREE.Box3().setFromObject(WWall);
+
 		// Add objects to scene
 		scene.add(floor);
 		scene.add(NWall);
@@ -259,7 +318,7 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 
 		// Add lights
-		var light = new THREE.AmbientLight(0xffffff, 10);
+		var light = new THREE.AmbientLight(0xffffff, 2);
 		light.castShadow = true;
 		scene.add(light);
 
