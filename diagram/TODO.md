@@ -7,7 +7,6 @@
 * Add measurement for selected device and placing device
 * Save JSON of scene to firestore
 * Load saves with property on the Diagram component
-* Rotate scene without placing device
 * Nodes on devices for wiring
 * Click device to zoom for wiring
 * Make lights actual lights togglable by switches
@@ -19,4 +18,5 @@
 * Change to button group instead of individual buttons
 * User profiles for scene saving
 * Profile button over canvas with transparent background
-* Textured floor
+* Textured floor and devices
+* Rotate scene without placing device

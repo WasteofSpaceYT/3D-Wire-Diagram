@@ -11,6 +11,7 @@
 	import { onMount } from "svelte";
 	import { initializeApp } from "firebase/app";
 	import { getAuth } from "firebase/auth";
+    import Login from "./login.svelte";
 
 	// Initialize firebase
 	const firebaseConfig = {
@@ -26,9 +27,11 @@
 	const auth = getAuth();
 
 	// Variables
+	let dragging: boolean = false;
 	let canvas: HTMLCanvasElement;
 	const scene = new THREE.Scene();
 	let renderer: THREE.WebGLRenderer;
+	let placingObjName: string;
 	let userToggled = false;
 	let width: number;
 	let height: number;
@@ -107,10 +110,12 @@
 	function onPointerMove(event) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		dragging = true;
 	}
 	// Animation loop render
 	function render(time: number) {
 		requestAnimationFrame(render);
+		//console.log(placing)
 		// Object placement raycasting
 		if (placing) {
 			pointerRaycaster.setFromCamera(pointer, camera);
@@ -120,7 +125,6 @@
 			);
 
 			for (let i = 0; i < intersections.length; i++) {
-				console.log(placingWall);
 				if (intersections != undefined) {
 					let point = intersections[i].point;
 					let lastPoint = cube.position;
@@ -210,7 +214,12 @@
 		renderer.render(scene, camera);
 	}
 	// Add receptacle to scene
-	const addCube = (device: "receptacleduplex" | "switch" | "switchduplex" | "receptaclequad", decora: boolean) => {
+	const addCube = (device: "receptacleduplex" | "switch" | "switchduplex" | "receptaclequad" | "light" | "florescent", decora: boolean) => {
+		if(placing){
+			scene.remove(cube)
+			//@ts-expect-error
+			scene.remove(placingBB)
+		}
 		const loader = new THREE.TextureLoader();
 		let texture: THREE.Texture;
 		switch(device){
@@ -262,7 +271,33 @@
 		placingBB = new Box3().setFromObject(cube);
 		scene.add(cube);
 		break;
+		case("light"):
+		texture = loader.load("light.jpg");
+		cube = new THREE.Mesh(
+			new THREE.CylinderGeometry(2.75 / 12, 2.75 / 12, 0.5 / 12),
+			new THREE.MeshBasicMaterial({
+				map: texture,
+			})
+		);
+		placing = true;
+		placingBB = new Box3().setFromObject(cube);
+		scene.add(cube);
+		break;
+		case("florescent"):
+		texture = loader.load("florescent.jpg");
+		cube = new THREE.Mesh(
+			new THREE.BoxGeometry(24 / 12, 48 / 12, 2 / 12),
+			new THREE.MeshBasicMaterial({
+				map: texture,
+			})
+		);
+		placing = true;
+		placingBB = new Box3().setFromObject(cube);
+		scene.add(cube);
+		break;
 		}
+		//@ts-expect-error
+		scene.add(placingBB)
 	};
 	onMount(() => {
 		// Load texture for floor
@@ -362,6 +397,16 @@
 		WWallBB = new THREE.Box3().setFromObject(WWall);
 
 		// Add objects to scene
+		//@ts-expect-error
+		scene.add(NWallBB)
+		//@ts-expect-error
+		scene.add(SWallBB)
+		//@ts-expect-error
+		scene.add(EWallBB)
+		//@ts-expect-error
+		scene.add(WWallBB)
+
+		// Add objects to scene
 		scene.add(floor);
 		scene.add(NWall);
 		scene.add(SWall);
@@ -458,6 +503,10 @@
 			<button on:click={() => {addCube("switch", true)}}>Single (Decora)</button>
 			<button on:click={() => {addCube("switchduplex", true)}}>Double (Decora)</button>
 		</div>
+		<div hidden={navShow != "lights" ? true : false}>
+			<button on:click={() => {addCube("light", false)}}>LED</button>
+			<button on:click={() => {addCube("florescent", false)}}>Florescent</button>
+		</div>
 		<form>
 			<input
 				type="radio"
@@ -488,4 +537,18 @@
 		camera.updateProjectionMatrix();
 	}}
 	on:mousemove={onPointerMove}
+	on:click={(e) => {
+		console.log(dragging)
+		console.log(e.target)
+		if(placing && e.target == canvas && !dragging){
+			console.log("here")
+			console.log(dragging)
+			placing = false;
+		}
+	}}
+	on:mouseup={() => {
+		setTimeout(() =>{
+		dragging = false;
+		}, 2000)
+	}}
 />
