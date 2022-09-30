@@ -115,8 +115,6 @@
 	// Animation loop render
 	function render(time: number) {
 		requestAnimationFrame(render);
-		//console.log(placing)
-		// Object placement raycasting
 		if (placing) {
 			pointerRaycaster.setFromCamera(pointer, camera);
 
@@ -291,6 +289,7 @@
 				map: texture,
 			})
 		);
+		cube.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
 		placing = true;
 		placingBB = new Box3().setFromObject(cube);
 		scene.add(cube);
@@ -396,15 +395,13 @@
 		EWallBB = new THREE.Box3().setFromObject(EWall);
 		WWallBB = new THREE.Box3().setFromObject(WWall);
 
-		// Add objects to scene
-		//@ts-expect-error
-		scene.add(NWallBB)
-		//@ts-expect-error
-		scene.add(SWallBB)
-		//@ts-expect-error
-		scene.add(EWallBB)
-		//@ts-expect-error
-		scene.add(WWallBB)
+		// Add bounding boxes for debug
+		let NWallBBHelper = new THREE.Box3Helper(NWallBB, new THREE.Color(0xffff00));
+		let SWallBBHelper = new THREE.Box3Helper(SWallBB, new THREE.Color(0xffff00));
+		let EWallBBHelper = new THREE.Box3Helper(EWallBB, new THREE.Color(0xffff00));
+		let WWallBBHelper = new THREE.Box3Helper(WWallBB, new THREE.Color(0xffff00));
+		scene.add(NWallBBHelper, SWallBBHelper, EWallBBHelper, WWallBBHelper);
+
 
 		// Add objects to scene
 		scene.add(floor);
@@ -414,18 +411,16 @@
 		scene.add(WWall);
 
 		// Create collision box for floor
-		floorBB = new THREE.Box3().setFromCenterAndSize(
-			new THREE.Vector3(0, -floor.scale.y, 0),
-			new THREE.Vector3(
-				floor.scale.x * 2,
-				floor.scale.y * 2,
-				floor.scale.z * 2
-			)
-		);
+		floor.geometry.computeBoundingBox();
+		floorBB = new THREE.Box3()
+		floorBB.copy( floor.geometry.boundingBox ).applyMatrix4( floor.matrixWorld );
+		let floorbbHelper = new THREE.Box3Helper(floorBB, new THREE.Color(0xffff00));
+		scene.add(floorbbHelper);
 
 		// Set camera position and rotation, then add to scene
 		camera.position.z = 10;
 		camera.position.y = 15;
+		camera.position.x = 10
 		camera.rotation.z = new THREE.Euler(0, 0, Math.PI / 4).z;
 		scene.add(camera);
 
