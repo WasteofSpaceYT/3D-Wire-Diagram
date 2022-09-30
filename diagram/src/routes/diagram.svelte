@@ -127,6 +127,7 @@
 					let point = intersections[i].point;
 					let lastPoint = cube.position;
 					cube.position.set(point.x, point.y + 1, point.z);
+					placingBB.setFromObject(cube)
 					if (NWallBB.intersectsBox(placingBB)) {
 						placingWall = NWall;
 						console.log("Here");
@@ -215,8 +216,6 @@
 	const addCube = (device: "receptacleduplex" | "switch" | "switchduplex" | "receptaclequad" | "light" | "florescent", decora: boolean) => {
 		if(placing){
 			scene.remove(cube)
-			//@ts-expect-error
-			scene.remove(placingBB)
 		}
 		const loader = new THREE.TextureLoader();
 		let texture: THREE.Texture;
@@ -295,8 +294,8 @@
 		scene.add(cube);
 		break;
 		}
-		//@ts-expect-error
-		scene.add(placingBB)
+		let placingBBHelper = new THREE.Box3Helper(placingBB, new THREE.Color(0xffff00));
+		scene.add(placingBBHelper)
 	};
 	onMount(() => {
 		// Load texture for floor
