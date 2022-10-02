@@ -123,31 +123,35 @@
 			);
 
 			for (let i = 0; i < intersections.length; i++) {
-				if (intersections != undefined) {
+				if (intersections != undefined && intersections[i].object.visible) {
+					if(intersections[i].object.name == "Floor") { console.log("Get Floored")
+				break;
+			} else console.log(intersections[i].object.name)
 					let point = intersections[i].point;
 					let lastPoint = cube.position;
 					cube.position.set(point.x, point.y + 1, point.z);
 					placingBB.setFromObject(cube)
 					if (NWallBB.intersectsBox(placingBB)) {
 						placingWall = NWall;
-						console.log("Here");
+						console.log("NWall");
 					}
 					if (SWallBB.intersectsBox(placingBB)) {
 						placingWall = SWall;
-						console.log("Here");
+						console.log("SWall");
 					}
 					if (EWallBB.intersectsBox(placingBB)) {
 						placingWall = EWall;
-						console.log("Here");
+						console.log("EWall");
 					}
 					if (WWallBB.intersectsBox(placingBB)) {
 						placingWall = WWall;
-						console.log("Here");
+						console.log("WWall");
 					}
 					if(floorBB.intersectsBox(placingBB)){
+						console.log("Floor")
 						break
 					}
-					/*for (let wall of walls) {
+					for (let wall of walls) {
 						switch (wall.name) {
 							case "NWall":
 								if (NWallBB.intersectsBox(placingBB)) {
@@ -174,13 +178,6 @@
 								}
 								break;
 						}
-					}*/
-					if (!placingWall) {
-						cube.position.set(
-							lastPoint.x,
-							lastPoint.y,
-							lastPoint.z
-						);
 					}
 				}
 			}
@@ -190,6 +187,7 @@
 					placingWall.rotation.y,
 					placingWall.rotation.z
 				);
+				console.log("moved")
 			}
 			placingWall = undefined;
 		}
