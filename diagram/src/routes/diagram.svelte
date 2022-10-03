@@ -123,32 +123,32 @@
 			);
 
 			for (let i = 0; i < intersections.length; i++) {
-				if (intersections != undefined && intersections[i].object.visible) {
-					if(intersections[i].object.name == "Floor") { console.log("Get Floored")
+				if (intersections != undefined && intersections[i].object.visible && intersections[i].object.type != "Box3Helper") {
+					if(intersections[i].object.name == "Floor" && floorBB.intersectsBox(placingBB)) { console.log("Get Floored")
 				break;
 			} else console.log(intersections[i].object.name)
 					let point = intersections[i].point;
 					let lastPoint = cube.position;
-					cube.position.set(point.x, point.y + 1, point.z);
+					cube.position.set(point.x, point.y, point.z);
 					placingBB.setFromObject(cube)
 					if (NWallBB.intersectsBox(placingBB)) {
 						placingWall = NWall;
-						console.log("NWall");
+						//console.log("NWall");
 					}
 					if (SWallBB.intersectsBox(placingBB)) {
 						placingWall = SWall;
-						console.log("SWall");
+						//console.log("SWall");
 					}
 					if (EWallBB.intersectsBox(placingBB)) {
 						placingWall = EWall;
-						console.log("EWall");
+						//console.log("EWall");
 					}
 					if (WWallBB.intersectsBox(placingBB)) {
 						placingWall = WWall;
-						console.log("WWall");
+						//console.log("WWall");
 					}
 					if(floorBB.intersectsBox(placingBB)){
-						console.log("Floor")
+						//console.log("Floor")
 						break
 					}
 					for (let wall of walls) {
@@ -156,25 +156,25 @@
 							case "NWall":
 								if (NWallBB.intersectsBox(placingBB)) {
 									placingWall = NWall;
-									console.log("Here");
+									console.log("");
 								}
 								break;
 							case "SWall":
 								if (SWallBB.intersectsBox(placingBB)) {
 									placingWall = SWall;
-									console.log("Here");
+									console.log("");
 								}
 								break;
 							case "EWall":
 								if (EWallBB.intersectsBox(placingBB)) {
 									placingWall = EWall;
-									console.log("Here");
+									console.log("");
 								}
 								break;
 							case "WWall":
 								if (WWallBB.intersectsBox(placingBB)) {
 									placingWall = WWall;
-									console.log("Here");
+									console.log("");
 								}
 								break;
 						}
@@ -183,8 +183,8 @@
 			}
 			if (placingWall) {
 				cube.rotation.set(
-					placingWall.rotation.x,
-					placingWall.rotation.y,
+					cube.rotation.x,
+					cube.rotation.y,
 					placingWall.rotation.z
 				);
 				console.log("moved")
