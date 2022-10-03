@@ -33,13 +33,14 @@
 	let renderer: THREE.WebGLRenderer;
 	let placingObjName: string;
 	let userToggled = false;
+	let floorMaterial: string = "wood1";
 	let width: number;
 	let height: number;
 	let length: number;
 	let placing: boolean = false;
 	let cube: THREE.Mesh;
 	let floorCorners: THREE.Vector3[];
-	let wallHeight = 9;
+	let wallHeight: number = 9;
 	let showing: "Floor" | "Ceiling" = "Floor";
 	let navShow: "receptacles" | "switches" | "lights" = "receptacles";
 	let floor: Mesh;
@@ -66,33 +67,38 @@
 	let url = location.href;
 	try {
 		let params = url.split("?")[1].split("&");
-		if (params.length != 3) {
+		if (params.length != 4) {
 			alert("Invalid arguments");
 		}
 		if (
 			params[0].split("=")[0] != "width" ||
 			params[1].split("=")[0] != "length" ||
-			params[2].split("=")[0] != "height"
+			params[2].split("=")[0] != "height" ||
+			params[3].split("=")[0] != "floor"
 		) {
 			alert("Invalid arguments");
 		}
 		if (
 			params[0].split("=")[0] != "width" ||
 			params[1].split("=")[0] != "length" ||
-			(params[2].split("=")[0] != "height" && params.length == 3)
+			params[3].split("=")[0] != "floor" ||
+			(params[2].split("=")[0] != "height" && params.length == 4)
 		) {
 			width = 5;
 			length = 10;
 			height = 9;
+			floorMaterial = "wood1";
 		} else {
 			width = parseInt(params[0].split("=")[1]);
 			length = parseInt(params[1].split("=")[1]);
 			height = parseInt(params[2].split("=")[1]);
+			floorMaterial = params[3].split("=")[1];
 		}
 	} catch (err) {
 		width = 5;
 		length = 10;
 		height = 9;
+		floorMaterial = "wood1";
 	}
 
 	// Empty wall array
@@ -299,7 +305,7 @@
 		// Load texture for floor
 		let floormat: THREE.MeshBasicMaterial;
 		let loader = new THREE.TextureLoader();
-		let texture = loader.load("/wood1.jpg");
+		let texture = loader.load(`/${floorMaterial}.jpg`);
 		floormat = new THREE.MeshBasicMaterial({
 			map: texture,
 		});

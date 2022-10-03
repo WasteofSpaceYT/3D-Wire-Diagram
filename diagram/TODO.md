@@ -1,7 +1,6 @@
 # TODO
 * Receptacles on wall
 * Keep receptacles off floor and ceiling
-* Add switches
 * Keep switches off floor and ceiling
 * Add lights on ceiling
 * Add measurement for selected device and placing device
@@ -11,7 +10,6 @@
 * Click device to zoom for wiring
 * Make lights actual lights togglable by switches
 * Multimeter for receptacles
-* Add floor styles and wall colors to home page and in diagram page
 
 # DONE
 * Floor option selected by default
@@ -21,3 +19,5 @@
 * Profile button over canvas with transparent background
 * Textured floor and devices
 * Rotate scene without placing device
+* Add floor styles and wall colors to home page and in diagram page
+* Add switches
