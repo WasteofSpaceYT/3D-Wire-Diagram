@@ -11,6 +11,7 @@
 * Click device to zoom for wiring
 * Make lights actual lights togglable by switches
 * Multimeter for receptacles
+* Add floor styles and wall colors to home page and in diagram page
 
 # DONE
 * Floor option selected by default
