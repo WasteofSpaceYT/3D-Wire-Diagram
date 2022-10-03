@@ -299,7 +299,7 @@
 		// Load texture for floor
 		let floormat: THREE.MeshBasicMaterial;
 		let loader = new THREE.TextureLoader();
-		let texture = loader.load("/floor.jpg");
+		let texture = loader.load("/wood1.jpg");
 		floormat = new THREE.MeshBasicMaterial({
 			map: texture,
 		});
