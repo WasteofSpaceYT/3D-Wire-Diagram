@@ -102,6 +102,7 @@
 				wallColor = [params[4].split("=")[1], params[4].split("=")[1], params[4].split("=")[1], params[4].split("=")[1]];
 			} else if(params[4].split("=")[1].startsWith("[")){
 				wallColor = params[4].split("=")[1].replace("[", "").replace("]", "").replaceAll("%22", "").split(",");
+				console.log(wallColor)
 			}
 		}
 	} catch (err) {

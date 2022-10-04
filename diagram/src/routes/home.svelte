@@ -20,7 +20,7 @@ import { onMount } from "svelte";
             wallColor = [formDat.get("nwall").toString(), formDat.get("swall").toString(), formDat.get("ewall").toString(), formDat.get("wwall").toString()]
         }
         console.log(wallColor)
-        location.href = `/diagram?width=${width}&length=${length}&height=${height}&floor=${floorMat}&wallColor=${wallColor}`
+        location.href = `/diagram?width=${width}&length=${length}&height=${height}&floor=${floorMat}&wallColor=[${wallColor}]`
     }
 </script>
 <div style="margin: 20px">
