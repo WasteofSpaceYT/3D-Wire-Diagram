@@ -34,7 +34,7 @@ import { onMount } from "svelte";
     <br />
     Height: <input type="number" bind:value={height} />ft
     <div id="room" style="border: 1px solid black; margin: 25px" />
-    <form on:submit|preventDefault={submit}>
+    <form on:submit|preventDefault={submit} style="columns: auto">
     <table style="display: flex">
         <tr><td style="margin-right: 5px; justify-content: center; vertical-align: middle;">Wood:</td> 
         <td><input type="radio" name="floor" value="wood1" checked><label><img src="/wood1.jpg" alt="" width=50 height = 50></label></td>
