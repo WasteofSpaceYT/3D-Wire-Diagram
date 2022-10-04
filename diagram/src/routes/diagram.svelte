@@ -40,11 +40,13 @@
 	let placing: boolean = false;
 	let cube: THREE.Mesh;
 	let floorCorners: THREE.Vector3[];
+	let ceilingCorners: THREE.Vector3[];
 	let wallColor: string | string[] = "#808080"
 	let wallHeight: number = 9;
 	let showing: "Floor" | "Ceiling" = "Floor";
 	let navShow: "receptacles" | "switches" | "lights" = "receptacles";
 	let floor: Mesh;
+	let ceiling: Mesh;
 	let NWall: Mesh;
 	let SWall: Mesh;
 	let EWall: Mesh;
@@ -58,6 +60,15 @@
 	let floorBB: THREE.Box3;
 	let NSRot: THREE.Euler = new THREE.Euler(0, 0, Math.PI / 2);
 	let EWRot: THREE.Euler = new THREE.Euler(Math.PI / 2, Math.PI / 2, 0);
+
+	// Unused type interface just for reference
+	interface urlParams {
+		width: number;
+		length: number;
+		height: number;
+		floor: string;
+		wallColor: string | string[];
+	}
 
 	// Raycasters for object placement and wall hiding
 	const raycaster = new THREE.Raycaster();
@@ -144,7 +155,7 @@
 				if (intersections != undefined && intersections[i].object.visible && intersections[i].object.type != "Box3Helper") {
 					if(intersections[i].object.name == "Floor" && floorBB.intersectsBox(placingBB)) { console.log("Get Floored")
 				break;
-			} else console.log(intersections[i].object.name)
+			} else {console.log(intersections[i].object.name)
 					let point = intersections[i].point;
 					let lastPoint = cube.position;
 					cube.position.set(point.x, point.y, point.z);
@@ -200,15 +211,14 @@
 				}
 			}
 			if (placingWall) {
-				cube.rotation.set(
-					cube.rotation.x,
-					cube.rotation.y,
-					placingWall.rotation.z
-				);
-				console.log("moved")
+				if(placingWall.name == "NWall" || placingWall.name == "SWall"){
+					cube.rotation.set(cube.rotation.x, Math.PI/2, cube.rotation.z);
+				} else if(placingWall.name == "EWall" || placingWall.name == "WWall"){
+					cube.rotation.set(cube.rotation.x, Math.PI, EWRot.z);
+				}
 			}
 			placingWall = undefined;
-		}
+		}}
 		// Wall hiding raycasting
 		for (const wall of walls) {
 			let blockingFloor = false;
@@ -331,6 +341,7 @@
 
 		// Create floor and walls
 		floor = new Mesh(new THREE.BoxGeometry(width, 0.05, length), floormat);
+		ceiling = new Mesh(new THREE.BoxGeometry(width, 0.05, length), new THREE.MeshBasicMaterial({ color: new THREE.Color() }));
 		NWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
 			new THREE.MeshBasicMaterial({
@@ -362,6 +373,30 @@
 
 		// Set the floor corners for wall hiding
 		floorCorners = [
+			new THREE.Vector3(
+				floor.position.x + floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z + floor.scale.z * 2
+			),
+			new THREE.Vector3(
+				floor.position.x + floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z - floor.scale.z * 2
+			),
+			new THREE.Vector3(
+				floor.position.x - floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z - floor.scale.z * 2
+			),
+			new THREE.Vector3(
+				floor.position.x - floor.scale.x * 2,
+				floor.position.y * 2,
+				floor.position.z + floor.scale.z * 2
+			),
+		];
+
+		// Set the ceiling corners for wall hiding
+		ceilingCorners = [
 			new THREE.Vector3(
 				floor.position.x + floor.scale.x * 2,
 				floor.position.y * 2,
