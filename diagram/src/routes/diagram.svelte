@@ -40,6 +40,7 @@
 	let placing: boolean = false;
 	let cube: THREE.Mesh;
 	let floorCorners: THREE.Vector3[];
+	let wallColor: string | string[] = "#808080"
 	let wallHeight: number = 9;
 	let showing: "Floor" | "Ceiling" = "Floor";
 	let navShow: "receptacles" | "switches" | "lights" = "receptacles";
@@ -67,14 +68,15 @@
 	let url = location.href;
 	try {
 		let params = url.split("?")[1].split("&");
-		if (params.length != 4) {
+		if (params.length != 5) {
 			alert("Invalid arguments");
 		}
 		if (
 			params[0].split("=")[0] != "width" ||
 			params[1].split("=")[0] != "length" ||
 			params[2].split("=")[0] != "height" ||
-			params[3].split("=")[0] != "floor"
+			params[3].split("=")[0] != "floor" ||
+			params[4].split("=")[0] != "wallColor"
 		) {
 			alert("Invalid arguments");
 		}
@@ -82,25 +84,34 @@
 			params[0].split("=")[0] != "width" ||
 			params[1].split("=")[0] != "length" ||
 			params[3].split("=")[0] != "floor" ||
-			(params[2].split("=")[0] != "height" && params.length == 4)
+			params[4].split("=")[0] != "wallColor" ||
+			(params[2].split("=")[0] != "height" && params.length == 5)
 		) {
 			width = 5;
 			length = 10;
 			height = 9;
 			floorMaterial = "wood1";
+			wallColor = ["#808080", "#808080", "#808080", "#808080"];
 		} else {
 			width = parseInt(params[0].split("=")[1]);
 			length = parseInt(params[1].split("=")[1]);
 			height = parseInt(params[2].split("=")[1]);
 			floorMaterial = params[3].split("=")[1];
+			if(params[4].split("=")[1].startsWith("#")){
+				console.log(wallColor)
+				wallColor = [params[4].split("=")[1], params[4].split("=")[1], params[4].split("=")[1], params[4].split("=")[1]];
+			} else if(params[4].split("=")[1].startsWith("[")){
+				wallColor = params[4].split("=")[1].replace("[", "").replace("]", "").replaceAll("%22", "").split(",");
+			}
 		}
 	} catch (err) {
 		width = 5;
 		length = 10;
 		height = 9;
 		floorMaterial = "wood1";
+		wallColor = ["#808080", "#808080", "#808080", "#808080"]
 	}
-
+	console.log(typeof wallColor)
 	// Empty wall array
 	let walls: THREE.Object3D<THREE.Event>[] = [];
 
@@ -322,28 +333,28 @@
 		NWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x808080),
+				color: new THREE.Color(wallColor[0]),
 			})
 		);
 		NWall.position.x = width / 2;
 		SWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x808080),
+				color: new THREE.Color(wallColor[1]),
 			})
 		);
 		SWall.position.x = -width / 2;
 		EWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, width),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x808080),
+				color: new THREE.Color(wallColor[2]),
 			})
 		);
 		EWall.position.z = length / 2;
 		WWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, width),
 			new THREE.MeshBasicMaterial({
-				color: new THREE.Color(0x808080),
+				color: new THREE.Color(wallColor[3]),
 			})
 		);
 		WWall.position.z = -length / 2;
@@ -374,7 +385,7 @@
 		renderer.setAnimationLoop(render);
 		// Set object names
 		floor.name = "Floor";
-		console.log("gay");
+		console.log(wallColor);
 		NWall.name = "NWall";
 		SWall.name = "SWall";
 		EWall.name = "EWall";
