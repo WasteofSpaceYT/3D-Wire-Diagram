@@ -36,17 +36,17 @@ import { onMount } from "svelte";
     <div id="room" style="border: 1px solid black; margin: 25px" />
     <form on:submit|preventDefault={submit}>
     <table style="display: flex">
-        <tr>Wood: 
+        <tr><p>Wood:</p> 
         <td><input type="radio" name="floor" value="wood1" checked><label><img src="/wood1.jpg" alt="" width=50 height = 50></label></td>
         <td><input type="radio" name="floor" value="wood2"><label><img src="/wood2.jpg" alt="" width=50 height = 50></label></td>
         <td><input type="radio" name="floor" value="wood3"><label><img src="/wood3.jpg" alt="" width=50 height = 50></label></td>
         </tr>
-        <tr style="margin-left: 5px">Tile: 
+        <tr style="margin-left: 5px"><p>Tile:</p> 
             <td><input type="radio" name="floor" value="tile1"><label><img src="/tile1.jpg" alt="" width=50 height = 50></label></td>
         <td><input type="radio" name="floor" value="tile2"><label><img src="/tile2.jpg" alt="" width=50 height = 50></label></td>
         <td><input type="radio" name="floor" value="tile3"><label><img src="/tile3.jpg" alt="" width=50 height = 50></label></td>
         </tr>
-        <tr style="margin-left: 5px">Carpet: 
+        <tr style="margin-left: 5px"><p>Carpet:</p> 
             <td><input type="radio" name="floor" value="carpet1"><label><img src="/carpet1.jpg" alt="" width=50 height = 50></label></td>
         <td><input type="radio" name="floor" value="carpet2"><label><img src="/carpet2.jpg" alt="" width=50 height = 50></label></td>
         <td><input type="radio" name="floor" value="carpet3"><label><img src="/carpet3.jpg" alt="" width=50 height = 50></label></td>
