@@ -1,5 +1,5 @@
 # TODO
-* Receptacles on wall
+* Make the devices stick to the walls
 * Keep receptacles off floor and ceiling
 * Keep switches off floor and ceiling
 * Add lights on ceiling
@@ -12,6 +12,7 @@
 * Multimeter for receptacles
 
 # DONE
+* Receptacles on wall
 * Floor option selected by default
 * Change wall height in home
 * Change to button group instead of individual buttons

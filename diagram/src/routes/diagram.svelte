@@ -41,6 +41,7 @@
 	let cube: THREE.Mesh;
 	let floorCorners: THREE.Vector3[];
 	let ceilingCorners: THREE.Vector3[];
+	let theCorners: THREE.Vector3[];
 	let wallColor: string | string[] = "#808080"
 	let wallHeight: number = 9;
 	let showing: "Floor" | "Ceiling" = "Floor";
@@ -235,6 +236,29 @@
 			}
 			wall.visible = !blockingFloor;
 		}
+		for(const corner of floorCorners){
+			let blockingFloor = false;
+			raycaster.set(
+				camera.position,
+				corner.clone().sub(camera.position).normalize()
+			);
+			const intersects = raycaster.intersectObjects([ceiling], true);
+			if(intersects.length > 0){
+				blockingFloor = true;
+				break;
+			}
+			floor.visible = !blockingFloor;
+		}
+		for(const corner of ceilingCorners){
+			let blockingCeiling = false;
+			raycaster.set(camera.position, corner.clone().sub(camera.position).normalize());
+			const intersects = raycaster.intersectObjects([floor], true);
+			if(intersects.length > 0){
+				blockingCeiling = true;
+				break;
+			}
+			floor.visible = !blockingCeiling;
+		}
 
 		renderer.render(scene, camera);
 	}
@@ -341,7 +365,7 @@
 
 		// Create floor and walls
 		floor = new Mesh(new THREE.BoxGeometry(width, 0.05, length), floormat);
-		ceiling = new Mesh(new THREE.BoxGeometry(width, 0.05, length), new THREE.MeshBasicMaterial({ color: new THREE.Color() }));
+		ceiling = new Mesh(new THREE.BoxGeometry(width - 0.1, 0.05, length - 0.1), new THREE.MeshBasicMaterial({ color: new THREE.Color() }));
 		NWall = new Mesh(
 			new THREE.BoxGeometry(height, 0.05, length),
 			new THREE.MeshBasicMaterial({
@@ -399,29 +423,35 @@
 		ceilingCorners = [
 			new THREE.Vector3(
 				floor.position.x + floor.scale.x * 2,
-				floor.position.y * 2,
+				height,
 				floor.position.z + floor.scale.z * 2
 			),
 			new THREE.Vector3(
 				floor.position.x + floor.scale.x * 2,
-				floor.position.y * 2,
+				height,
 				floor.position.z - floor.scale.z * 2
 			),
 			new THREE.Vector3(
 				floor.position.x - floor.scale.x * 2,
-				floor.position.y * 2,
+				height,
 				floor.position.z - floor.scale.z * 2
 			),
 			new THREE.Vector3(
 				floor.position.x - floor.scale.x * 2,
-				floor.position.y * 2,
+				height,
 				floor.position.z + floor.scale.z * 2
 			),
 		];
+		for(const corner of ceilingCorners) {
+			let theSphere = new THREE.Mesh(new THREE.SphereGeometry(0.05), new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)}))
+			theSphere.position.set(corner.x, corner.y, corner.z)
+			scene.add(theSphere)
+		}
+		theCorners = Array.prototype.concat(floorCorners, ceilingCorners);
 		renderer.setAnimationLoop(render);
 		// Set object names
 		floor.name = "Floor";
-		console.log(wallColor);
+		ceiling.position.y = height;
 		NWall.name = "NWall";
 		SWall.name = "SWall";
 		EWall.name = "EWall";
@@ -459,6 +489,7 @@
 		scene.add(SWall);
 		scene.add(EWall);
 		scene.add(WWall);
+		scene.add(ceiling)
 
 		// Create collision box for floor
 		floor.geometry.computeBoundingBox();
